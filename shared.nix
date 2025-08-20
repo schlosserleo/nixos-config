@@ -25,7 +25,7 @@
   networking.hostName = "${currentSystemName}";
   time.timeZone = "Europe/Berlin";
 
-  user.mutableUsers = false;
+  users.mutableUsers = false;
   fonts.fontDir.enable = true;
   system.stateVersion = "25.11";
 }

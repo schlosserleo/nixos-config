@@ -8,9 +8,9 @@ let
   };
 in
 {
+  xdg.enable = true;
   home = {
     stateVersion = "25.11";
-    xdg.enable = true;
     packages = with pkgs; [
       eza
       fd
