@@ -24,7 +24,7 @@
     in
     {
       nixosConfigurations.vm = mkSystem "vm" {
-        system = "znver4";
+        system = "x86_64-linux";
         user = "leo";
       };
     };
