@@ -32,10 +32,12 @@ in
   };
   programs = {
     gpg = {
-      package = pkgs.gnupg;
       enable = true;
       homedir = "/home/leo/.gnupg";
-      publicKeys = [ { source = ./gpgpub.key; } ];
+      publicKeys = [ { 
+        source = ./gpgpub.key; 
+	trust = "ultimate";
+      } ];
       scdaemonSettings = {
         disable-ccid = true;
 	pcsc-shared = true;
@@ -56,10 +58,18 @@ in
       enable = true;
       userName = "Leo Schlosser";
       userEmail = "leoschlosser@tutamail.com";
+      signing = {
+	key = "F7155193AF248B6A";
+	signByDefault = true;
+      };
       extraConfig = {
         color.ui = true;
         github.user = "schlosserleo";
         init.defaultBranch = "main";
+	core.editor = "nvim";
+	commit.gpgsign = true;
+	tag.gpgsign = true;
+	pull.rebase = true;
       };
     };
   };
@@ -68,6 +78,10 @@ in
     gpg-agent = {
       enable = true;
       enableFishIntegration = true;
+      pinentryPackage = pkgs.pinentry-gnome3;
+      extraConfig = ''
+        allow-loopback-pinentry
+      '';
     };
   };
 
