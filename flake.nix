@@ -2,7 +2,7 @@
   description = "Leos Nix Conf";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,6 +24,10 @@
     in
     {
       nixosConfigurations.vm = mkSystem "vm" {
+        system = "x86_64-linux";
+        user = "leo";
+      };
+      nixosConfigurations.vm2 = mkSystem "vm2" {
         system = "x86_64-linux";
         user = "leo";
       };
