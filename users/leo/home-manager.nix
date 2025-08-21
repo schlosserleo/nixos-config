@@ -24,12 +24,23 @@ in
       gnome-tweaks
       xdg-terminal-exec
       fastfetch
+      yubioath-flutter
     ];
     sessionVariables = {
       EDITOR = "nvim";
     };
   };
   programs = {
+    gpg = {
+      package = pkgs.gnupg;
+      enable = true;
+      homedir = "/home/leo/.gnupg";
+      publicKeys = [ { source = ./gpgpub.key; } ];
+      scdaemonSettings = {
+        disable-ccid = true;
+	pcsc-shared = true;
+      };
+    };
     bash = {
       enable = true;
       shellOptions = [ ];
@@ -56,6 +67,7 @@ in
   services = {
     gpg-agent = {
       enable = true;
+      enableFishIntegration = true;
     };
   };
 

@@ -35,5 +35,11 @@
 
   users.mutableUsers = false;
   fonts.fontDir.enable = true;
+
+  services = {
+    udev.packages = [ pkgs.yubikey-personalization ];
+    pcscd.enable = true;
+  };
+
   system.stateVersion = "25.11";
 }
