@@ -40,7 +40,7 @@ in
       } ];
       scdaemonSettings = {
         disable-ccid = true;
-	pcsc-shared = true;
+	      pcsc-shared = true;
       };
     };
     bash = {
@@ -66,10 +66,10 @@ in
         color.ui = true;
         github.user = "schlosserleo";
         init.defaultBranch = "main";
-	core.editor = "nvim";
-	commit.gpgsign = true;
-	tag.gpgsign = true;
-	pull.rebase = true;
+        core.editor = "nvim";
+        commit.gpgsign = true;
+        tag.gpgsign = true;
+        pull.rebase = true;
       };
     };
   };
@@ -78,7 +78,7 @@ in
     gpg-agent = {
       enable = true;
       enableFishIntegration = true;
-      pinentryPackage = pkgs.pinentry-gnome3;
+      pinentry.package = pkgs.pinentry-gnome3;
       extraConfig = ''
         allow-loopback-pinentry
       '';
