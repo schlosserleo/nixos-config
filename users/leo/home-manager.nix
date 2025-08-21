@@ -5,6 +5,7 @@ let
   shellAliases = {
     ga = "git add";
     gc = "git commit";
+    ls = "eza --icons";
   };
 in
 {
@@ -15,9 +16,13 @@ in
       eza
       fd
       fzf
+      tealdeer
       ripgrep
       chromium
       ghostty
+      nautilus
+      gnome-tweaks
+      xdg-terminal-exec
     ];
     sessionVariables = {
       EDITOR = "nvim";
@@ -50,6 +55,17 @@ in
   services = {
     gpg-agent = {
       enable = true;
+    };
+  };
+
+  dconf.enable = true;
+  dconf.settings = {
+    "org/gnome/mutter" = {
+      experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
+    };
+    "org/gnome/desktop/input-sources" = {
+      show-all-sources = true;
+      sources = [ (lib.hm.gvariant.mkTuple [ "xkb" "de+neo_qwertz" ]) ];
     };
   };
 }
