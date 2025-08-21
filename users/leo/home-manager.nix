@@ -1,5 +1,5 @@
 { inputs, ... }:
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   shellAliases = {
