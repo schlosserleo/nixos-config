@@ -23,6 +23,7 @@ in
       nautilus
       gnome-tweaks
       xdg-terminal-exec
+      fastfetch
     ];
     sessionVariables = {
       EDITOR = "nvim";
