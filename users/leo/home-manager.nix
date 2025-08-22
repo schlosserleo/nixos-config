@@ -54,6 +54,13 @@ in
       installVimSyntax = true;
       settings = {
         theme = "light:GitHub-Light-Colorblind,dark:GitHub-Dark-Colorblind";
+        font-family = "TX-02";
+        font-style = "SemiCondensed";
+        font-style-bold = "Bold SemiCondensed";
+        font-style-italic = "SemiCondensed Oblique";
+        font-style-bold-italic = "Bold SemiCondensed Oblique";
+        font-feature = "-calt";
+        font-size = 14;
       };
       themes = {
         moonfly = {
@@ -105,7 +112,75 @@ in
       enable = true;
       shellAliases = shellAliases;
     };
-    neovim.enable = true;
+    neovim = {
+      enable = true;
+      defaultEditor = true; 
+      viAlias = true;
+      vimAlias = true;
+      extraPackages = with pkgs; [
+        lua-language-server
+        nixd
+        stylua
+      ];
+      extraLuaConfig = ''
+        vim.opt.number = true
+        vim.opt.relativenumber = true
+        vim.opt.termguicolors = true
+        vim.opt.tabstop = 2
+        vim.opt.softtabstop = 2
+        vim.opt.shiftwidth = 2
+        vim.opt.expandtab = true
+        vim.opt.syntax = on
+        vim.opt.foldlevel = 99
+        vim.opt.colorcolumn = "100"
+        vim.opt.scrolloff = 8
+        vim.opt.signcolumn = "yes"
+        vim.opt.splitbelow = true
+        vim.opt.splitright = true
+        vim.opt.undofile = true
+        vim.opt.wrap = false
+
+        vim.g.mapleader = " "
+
+        vim.pack.add({
+          { src = "https://github.com/neovim/nvim-lspconfig" },
+          { src = "https://github.com/projekt0n/github-nvim-theme" },
+          { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+          { src = "https://github.com/echasnovski/mini.pick" },
+          { src = "https://github.com/nvim-tree/nvim-tree.lua"},
+        })
+
+        require("nvim-tree").setup()
+        require("mini.pick").setup()
+
+        vim.lsp.enable({
+          "lua_ls",
+          "nixd",
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "lua",
+          callback = function()
+            vim.bo.formatprg = "stylua --indent-type Spaces --indent-width 2 -"
+          end,
+        })
+
+        vim.api.nvim_create_autocmd("OptionSet", {
+        pattern = "background",
+        callback = function()
+          if vim.o.background == "dark" then
+            vim.cmd.colorscheme("github_dark_colorblind")
+          else
+            vim.cmd.colorscheme("github_light_colorblind")
+          end
+        end
+      })
+
+      vim.keymap.set("n", "<leader>ff", ":Pick files<CR>")
+      vim.keymap.set("n", "<leader>fw", ":Pick grep_live<CR>")
+      vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+      '';
+    };
     git = {
       enable = true;
       userName = "Leo Schlosser";

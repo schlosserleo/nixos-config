@@ -5,7 +5,7 @@
     ./modules/gnome.nix
   ];
 
-  boot = {
+ boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot.enable = true;
@@ -40,6 +40,10 @@
     pcscd.enable = true;
     pipewire.enable = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    vim
+  ];
 
   system.stateVersion = "25.11";
 }
