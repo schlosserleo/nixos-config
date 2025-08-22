@@ -9,6 +9,9 @@ let
   };
 in
 {
+  imports = [
+    ../../modules/dconf.nix
+  ];
   xdg.enable = true;
   home = {
     stateVersion = "25.11";
@@ -85,14 +88,4 @@ in
     };
   };
 
-  dconf.enable = true;
-  dconf.settings = {
-    "org/gnome/mutter" = {
-      experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
-    };
-    "org/gnome/desktop/input-sources" = {
-      show-all-sources = true;
-      sources = [ (lib.hm.gvariant.mkTuple [ "xkb" "de+neo_qwertz" ]) ];
-    };
-  };
 }
