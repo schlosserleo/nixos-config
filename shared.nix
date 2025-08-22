@@ -34,7 +34,6 @@
   time.timeZone = "Europe/Berlin";
 
   users.mutableUsers = false;
-  fonts.fontDir.enable = true;
 
   services = {
     udev.packages = [ pkgs.yubikey-personalization ];
