@@ -21,7 +21,7 @@ in
       ];
       extraPortals = with pkgs; [
       	xdg-desktop-portal-gtk
-      ]
+      ];
     };
   };
   home = {
