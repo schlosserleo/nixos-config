@@ -39,6 +39,7 @@
   services = {
     udev.packages = [ pkgs.yubikey-personalization ];
     pcscd.enable = true;
+    pipewire.enable = true;
   };
 
   system.stateVersion = "25.11";

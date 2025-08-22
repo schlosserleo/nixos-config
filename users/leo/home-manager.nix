@@ -12,7 +12,16 @@ in
   imports = [
     ../../modules/dconf.nix
   ];
-  xdg.enable = true;
+  xdg = {
+    enable = true;
+    portal = {
+      enable = true;
+      configPackages = with pkgs; [
+        xdg-desktop-portal-wlr
+	xdg-desktop-portal-gtk
+      ];
+    };
+  };
   home = {
     stateVersion = "25.11";
     packages = with pkgs; [
@@ -28,6 +37,7 @@ in
       xdg-terminal-exec
       fastfetch
       yubioath-flutter
+      inputs.zen-browser.packages."${pkgs.system}".specific
     ];
     sessionVariables = {
       EDITOR = "nvim";

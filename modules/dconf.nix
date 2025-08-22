@@ -1,7 +1,4 @@
-{ inputs, ... }:
-{ config, lib, pkgs, ... }:
-
-{
+{ lib, ... }: {
   dconf.enable = true;
   dconf.settings = {
     "org/gnome/mutter" = {
@@ -13,12 +10,20 @@
       sources = [ (lib.hm.gvariant.mkTuple [ "xkb" "de+neo_qwertz" ]) ];
     };
     "org/gnome/settings-daemon/plugins/media-keys" = {
-      custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" ];
+      custom-keybindings = [ 
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+      ];
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
       binding = "<Super>Return";
       command = "xdg-terminal-exec";
       name = "Open Terminal";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+      binding = "<Super>e";
+      command = "nautilus";
+      name = "Open File Explorer";
     };
     "org/gnome/desktop/wm/keybindings" = {
       close = [ "<Shift><Super>q" ];
