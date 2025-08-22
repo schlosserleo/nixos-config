@@ -53,7 +53,7 @@ in
       enableFishIntegration = true;
       installVimSyntax = true;
       settings = {
-        theme = "moonfly";
+        theme = "light:Github-Light-High-Contrast,dark:moonfly";
       };
       themes = {
         moonfly = {
