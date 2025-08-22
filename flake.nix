@@ -31,5 +31,9 @@
         system = "x86_64-linux";
         user = "leo";
       };
+      nixosConfigurations.twinkpad = mkSystem "twinkpad" {
+        system = "x86_64-linux";
+        user = "leo";
+      };
     };
 }
