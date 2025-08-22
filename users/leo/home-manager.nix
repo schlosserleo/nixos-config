@@ -14,6 +14,10 @@ in
   ];
   xdg = {
     enable = true;
+    terminal-exec = {
+      enable = true;
+      settings.default = [ "ghostty.desktop"];
+    };
     portal = {
       enable = true;
       configPackages = with pkgs; [
@@ -36,10 +40,9 @@ in
       ghostty
       nautilus
       gnome-tweaks
-      xdg-terminal-exec
       fastfetch
       yubioath-flutter
-      inputs.zen-browser.packages."${pkgs.system}".specific
+      (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true;}) {})
     ];
     sessionVariables = {
       EDITOR = "nvim";

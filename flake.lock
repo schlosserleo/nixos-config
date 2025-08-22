@@ -170,7 +170,7 @@
         "hercules-ci-effects": "hercules-ci-effects",
         "neovim-src": "neovim-src",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-master"
         ],
         "treefmt-nix": "treefmt-nix"
       },
@@ -220,12 +220,27 @@
         "type": "github"
       }
     },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1755861563,
+        "narHash": "sha256-SJExWfa9j95/kGFGCQA4tejnljrt5dlJ1pSO6innTqs=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "56e92e848633091f1da03be23e369a360b50f0be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs",
-        "zen-browser": "zen-browser"
+        "nixpkgs-master": "nixpkgs-master"
       }
     },
     "treefmt-nix": {
@@ -246,26 +261,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "zen-browser": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1727721329,
-        "narHash": "sha256-QYlWZwUSwrM7BuO+dXclZIwoPvBIuJr6GpFKv9XKFPI=",
-        "owner": "MarceColl",
-        "repo": "zen-browser-flake",
-        "rev": "e6ab73f405e9a2896cce5956c549a9cc359e5fcc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MarceColl",
-        "repo": "zen-browser-flake",
         "type": "github"
       }
     }
