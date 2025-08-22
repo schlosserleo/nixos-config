@@ -1,6 +1,5 @@
-{ inputs, ... }:
-{ config, lib, pkgs, ... }:
-
+{ ... }:
+{ pkgs, ... }:
 let
   shellAliases = {
     ga = "git add";
@@ -16,15 +15,15 @@ in
     enable = true;
     terminal-exec = {
       enable = true;
-      settings.default = [ "ghostty.desktop"];
+      settings.default = [ "ghostty.desktop" ];
     };
     portal = {
       enable = true;
       configPackages = with pkgs; [
-	xdg-desktop-portal-gtk
+        xdg-desktop-portal-gtk
       ];
       extraPortals = with pkgs; [
-      	xdg-desktop-portal-gtk
+        xdg-desktop-portal-gtk
       ];
     };
   };
@@ -41,7 +40,7 @@ in
       gnome-tweaks
       fastfetch
       yubioath-flutter
-      (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true;}) {})
+      (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
     ];
     sessionVariables = {
       EDITOR = "nvim";
@@ -70,7 +69,7 @@ in
           selection-foreground = "#080808";
           cursor-color = "#8e8e8e";
           palette = [
-            "0=#323437" 
+            "0=#323437"
             "1=#ff5d5d"
             "2=#8cc85f"
             "3=#e3c78a"
@@ -93,13 +92,15 @@ in
     gpg = {
       enable = true;
       homedir = "/home/leo/.gnupg";
-      publicKeys = [ { 
-        source = ./gpgpub.key; 
-	trust = "ultimate";
-      } ];
+      publicKeys = [
+        {
+          source = ./gpgpub.key;
+          trust = "ultimate";
+        }
+      ];
       scdaemonSettings = {
         disable-ccid = true;
-	      pcsc-shared = true;
+        pcsc-shared = true;
       };
     };
     bash = {
@@ -114,71 +115,82 @@ in
     };
     neovim = {
       enable = true;
-      defaultEditor = true; 
+      defaultEditor = true;
       viAlias = true;
       vimAlias = true;
       extraPackages = with pkgs; [
         lua-language-server
         nixd
+        nixfmt
         stylua
       ];
       extraLuaConfig = ''
-        vim.opt.number = true
-        vim.opt.relativenumber = true
-        vim.opt.termguicolors = true
-        vim.opt.tabstop = 2
-        vim.opt.softtabstop = 2
-        vim.opt.shiftwidth = 2
-        vim.opt.expandtab = true
-        vim.opt.syntax = on
-        vim.opt.foldlevel = 99
-        vim.opt.colorcolumn = "100"
-        vim.opt.scrolloff = 8
-        vim.opt.signcolumn = "yes"
-        vim.opt.splitbelow = true
-        vim.opt.splitright = true
-        vim.opt.undofile = true
-        vim.opt.wrap = false
+         vim.opt.number = true
+         vim.opt.relativenumber = true
+         vim.opt.termguicolors = true
+         vim.opt.tabstop = 2
+         vim.opt.softtabstop = 2
+         vim.opt.shiftwidth = 2
+         vim.opt.expandtab = true
+         vim.opt.syntax = on
+         vim.opt.foldlevel = 99
+         vim.opt.colorcolumn = "100"
+         vim.opt.scrolloff = 8
+         vim.opt.signcolumn = "yes"
+         vim.opt.splitbelow = true
+         vim.opt.splitright = true
+         vim.opt.undofile = true
+         vim.opt.wrap = false
 
-        vim.g.mapleader = " "
+         vim.g.mapleader = " "
 
-        vim.pack.add({
-          { src = "https://github.com/neovim/nvim-lspconfig" },
-          { src = "https://github.com/projekt0n/github-nvim-theme" },
-          { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-          { src = "https://github.com/echasnovski/mini.pick" },
-          { src = "https://github.com/nvim-tree/nvim-tree.lua"},
+         vim.pack.add({
+           { src = "https://github.com/neovim/nvim-lspconfig" },
+           { src = "https://github.com/projekt0n/github-nvim-theme" },
+           { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+           { src = "https://github.com/echasnovski/mini.pick" },
+           { src = "https://github.com/nvim-tree/nvim-tree.lua"},
+         })
+
+         require("nvim-tree").setup()
+         require("mini.pick").setup()
+         require("lspconfig").nixd.setup({
+         settings = {
+             nixd = {
+               formatting = {
+                 command = { "nixfmt" },
+               },
+             },
+           },
+         })
+
+         vim.lsp.enable({
+           "lua_ls",
+           "nil_ls",
+         })
+
+         vim.api.nvim_create_autocmd("FileType", {
+           pattern = "lua",
+           callback = function()
+             vim.bo.formatprg = "stylua --indent-type Spaces --indent-width 2 -"
+           end,
+         })
+
+         vim.api.nvim_create_autocmd("OptionSet", {
+         pattern = "background",
+         callback = function()
+           if vim.o.background == "dark" then
+             vim.cmd.colorscheme("github_dark_colorblind")
+           else
+             vim.cmd.colorscheme("github_light_colorblind")
+           end
+         end
         })
 
-        require("nvim-tree").setup()
-        require("mini.pick").setup()
-
-        vim.lsp.enable({
-          "lua_ls",
-          "nixd",
-        })
-
-        vim.api.nvim_create_autocmd("FileType", {
-          pattern = "lua",
-          callback = function()
-            vim.bo.formatprg = "stylua --indent-type Spaces --indent-width 2 -"
-          end,
-        })
-
-        vim.api.nvim_create_autocmd("OptionSet", {
-        pattern = "background",
-        callback = function()
-          if vim.o.background == "dark" then
-            vim.cmd.colorscheme("github_dark_colorblind")
-          else
-            vim.cmd.colorscheme("github_light_colorblind")
-          end
-        end
-      })
-
-      vim.keymap.set("n", "<leader>ff", ":Pick files<CR>")
-      vim.keymap.set("n", "<leader>fw", ":Pick grep_live<CR>")
-      vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+        vim.keymap.set("n", "<leader>ff", ":Pick files<CR>")
+        vim.keymap.set("n", "<leader>fw", ":Pick grep_live<CR>")
+        vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+        vim.keymap.set("n", "<leader>lf", ":lua vim.lsp.buf.format()<CR>")
       '';
     };
     git = {
@@ -186,8 +198,8 @@ in
       userName = "Leo Schlosser";
       userEmail = "leoschlosser@tutamail.com";
       signing = {
-	key = "F7155193AF248B6A";
-	signByDefault = true;
+        key = "F7155193AF248B6A";
+        signByDefault = true;
       };
       extraConfig = {
         color.ui = true;
@@ -211,5 +223,4 @@ in
       '';
     };
   };
-
 }

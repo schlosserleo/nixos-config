@@ -1,11 +1,11 @@
-{ config, pkgs, lib, currentSystemName, ... }:
+{ pkgs, currentSystemName, ... }:
 
 {
   imports = [
     ./modules/gnome.nix
   ];
 
- boot = {
+  boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot.enable = true;
@@ -15,7 +15,7 @@
 
   nix = {
     settings = {
-    substituters = [
+      substituters = [
         "https://cache.nixos.org/"
         "https://mitchellh-nixos-config.cachix.org"
       ];

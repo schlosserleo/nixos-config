@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   programs.fish.enable = true;
   users.users.leo = {

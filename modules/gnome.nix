@@ -1,4 +1,5 @@
-{ lib,  pkgs, ... }: {
+{ pkgs, ... }:
+{
   services = {
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
@@ -8,8 +9,7 @@
       games.enable = false;
     };
   };
-  environment.gnome.excludePackages = with pkgs;
-  [
+  environment.gnome.excludePackages = with pkgs; [
     gnome-tour
     gnome-user-docs
   ];

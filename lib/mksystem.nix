@@ -1,6 +1,11 @@
-{ nixpkgs, overlays, inputs }:
+{
+  nixpkgs,
+  overlays,
+  inputs,
+}:
 
-name: { system, user }:
+name:
+{ system, user }:
 
 let
   machineConfig = ../machines/${name}.nix;
@@ -27,8 +32,8 @@ systemFunc rec {
     {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.users.${user} = import userHMConfig { 
-        inputs = inputs; 
+      home-manager.users.${user} = import userHMConfig {
+        inputs = inputs;
       };
     }
 
