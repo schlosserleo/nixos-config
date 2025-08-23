@@ -8,9 +8,15 @@
       core-developer-tools.enable = false;
       games.enable = false;
     };
+    udev.packages = [ pkgs.gnome-settings-daemon ];
   };
   environment.gnome.excludePackages = with pkgs; [
     gnome-tour
     gnome-user-docs
+  ];
+
+  environment.systemPackages = with pkgs; [
+    gnomeExtensions.appindicator 
+    gnomeExtensions.forge
   ];
 }

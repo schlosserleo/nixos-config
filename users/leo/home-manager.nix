@@ -52,6 +52,7 @@ in
       enableFishIntegration = true;
       installVimSyntax = true;
       settings = {
+        gtk-titlebar = false;
         theme = "light:GitHub-Light-Colorblind,dark:GitHub-Dark-Colorblind";
         font-family = "TX-02";
         font-style = "SemiCondensed";

@@ -39,6 +39,11 @@
     udev.packages = [ pkgs.yubikey-personalization ];
     pcscd.enable = true;
     pipewire.enable = true;
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
+      fileSystems = [ "/" ];
+    };
   };
 
   environment.systemPackages = with pkgs; [
