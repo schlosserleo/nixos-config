@@ -42,5 +42,10 @@
         system = "x86_64-linux";
         user = "leo";
       };
+
+      nixosConfigurations.twinkdesk = mkSystem "twinkdesk" {
+        system = "x86_64-linux";
+        user = "leo";
+      };
     };
 }
