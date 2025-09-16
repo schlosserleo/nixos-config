@@ -11,7 +11,6 @@
   #   fprintd.enable = true;
   # };
 
-
   home.packages = with pkgs; [
     decibels
     gapless
