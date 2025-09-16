@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware/twinkpad.nix
@@ -10,4 +10,13 @@
   #   power-profiles-daemon.enable = true;
   #   fprintd.enable = true;
   # };
+
+
+  home.packages = with pkgs; [
+    decibels
+    gapless
+    nicotine-plus
+    qbittorrent-enhanced
+    picard
+  ];
 }

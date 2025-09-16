@@ -8,4 +8,6 @@
     shell = pkgs.fish;
     hashedPassword = "$6$Kccgxupo9BLou66Y$WCAwVbJO5JD4SJLEBYC5qImmABONYgs0spDB9RtzkdMMl4T/krjZW/4MJbnj.jXsDLYWZdYuNqZK28b23700W/";
   };
+  services.mullvad-vpn.enable = true;
+  services.mullvad-vpn.package = pkgs.mullvad-vpn;
 }
