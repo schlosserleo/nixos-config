@@ -41,6 +41,7 @@ in
       fastfetch
       yubioath-flutter
       (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
+      prismlauncher
     ];
     sessionVariables = {
       EDITOR = "nvim";
