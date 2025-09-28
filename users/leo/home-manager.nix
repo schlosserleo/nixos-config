@@ -42,6 +42,7 @@ in
       yubioath-flutter
       (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
       prismlauncher
+      graalvmPackages.graalvm-oracle
     ];
     sessionVariables = {
       EDITOR = "nvim";
