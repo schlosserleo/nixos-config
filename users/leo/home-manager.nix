@@ -43,6 +43,7 @@ in
       (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
       prismlauncher
       graalvmPackages.graalvm-oracle
+      teamspeak6-client
     ];
     sessionVariables = {
       EDITOR = "nvim";
