@@ -122,9 +122,13 @@ in
       
     };
     starship = {
+      enable = true;
       enableTransience = true;
       enableInteractive = true;
       enableFishIntegration = true;
+      settings = {
+        add_newline = false;
+      };
     };
     neovim = {
       enable = true;
