@@ -119,7 +119,9 @@ in
     fish = {
       enable = true;
       shellAliases = shellAliases;
-      
+      interactiveShellInit = ''
+        set fish_greeting
+      '';
     };
     starship = {
       enable = true;
