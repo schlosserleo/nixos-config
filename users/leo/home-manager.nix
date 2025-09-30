@@ -48,9 +48,9 @@ in
     sessionVariables = {
       EDITOR = "nvim";
     };
-  };
-  shell = {
-    enableFishIntegration = true; 
+    shell = {
+      enableFishIntegration = true; 
+    };
   };
   programs = {
     ghostty = {
