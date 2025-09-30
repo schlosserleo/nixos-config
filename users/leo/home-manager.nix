@@ -49,6 +49,9 @@ in
       EDITOR = "nvim";
     };
   };
+  shell = {
+    enableFishIntegration = true; 
+  };
   programs = {
     ghostty = {
       enable = true;
@@ -116,6 +119,12 @@ in
     fish = {
       enable = true;
       shellAliases = shellAliases;
+      
+    };
+    starship = {
+      enableTransience = true;
+      enableInteractive = true;
+      enableFishIntegration = true;
     };
     neovim = {
       enable = true;
