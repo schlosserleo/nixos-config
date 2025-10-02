@@ -44,6 +44,7 @@ in
       prismlauncher
       graalvmPackages.graalvm-oracle
       teamspeak6-client
+      signal-desktop-bin
     ];
     sessionVariables = {
       EDITOR = "nvim";
