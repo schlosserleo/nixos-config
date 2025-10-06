@@ -57,6 +57,10 @@ with lib.hm.gvariant;
       switch-to-workspace-right = [ "<Super>Tab" ];
     };
 
+    "/org/gnome/desktop/wm/preferences" = {
+      resize-with-right-button = true;
+    };
+
     "org/gnome/shell/keybindings" = {
       shift-overview-down = [ ];
       shift-overview-up = [ ];
