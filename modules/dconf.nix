@@ -57,7 +57,7 @@ with lib.hm.gvariant;
       switch-to-workspace-right = [ "<Super>Tab" ];
     };
 
-    "/org/gnome/desktop/wm/preferences" = {
+    "org/gnome/desktop/wm/preferences" = {
       resize-with-right-button = true;
     };
 
