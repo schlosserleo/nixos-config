@@ -48,6 +48,7 @@
 
   environment.systemPackages = with pkgs; [
     vim
+    unzip
   ];
 
   system.stateVersion = "25.11";

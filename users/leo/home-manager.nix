@@ -45,6 +45,7 @@ in
       graalvmPackages.graalvm-oracle
       teamspeak6-client
       signal-desktop-bin
+      steam
     ];
     sessionVariables = {
       EDITOR = "nvim";
@@ -170,8 +171,13 @@ in
            { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
            { src = "https://github.com/echasnovski/mini.pick" },
            { src = "https://github.com/nvim-tree/nvim-tree.lua"},
+           { src = "https://github.com/mason-org/mason.nvim" },
+           { src = "https://github.com/Civitasv/cmake-tools.nvim" },
+           { src = "https://github.com/nvim-lua/plenary.nvim" },
          })
 
+         require("mason").setup()
+         require("cmake-tools").setup({})
          require("nvim-tree").setup()
          require("mini.pick").setup()
          require("lspconfig").nixd.setup({
@@ -187,6 +193,7 @@ in
          vim.lsp.enable({
            "lua_ls",
            "nil_ls",
+           "clangd",
          })
 
          vim.api.nvim_create_autocmd("FileType", {
