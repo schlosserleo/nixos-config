@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -7,6 +8,8 @@
   imports = [
     ./modules/gnome.nix
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -24,11 +27,16 @@
 
   time.timeZone = "Europe/Berlin";
 
-  users.mutableUsers = false;
-  users.users.leo = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    hashedPassword = "$y$j9T$yNdH78UHzeQnPlNXL9mhl1$lCFH86eSjuG9Og.gpBXDavWOpbZE0dYb/jeaRr2V3R5";
+  users = {
+    mutableUsers = false;
+    users = {
+      leo = {
+        isNormalUser = true;
+        extraGroups = [ "wheel" ];
+        hashedPassword = "$y$j9T$yNdH78UHzeQnPlNXL9mhl1$lCFH86eSjuG9Og.gpBXDavWOpbZE0dYb/jeaRr2V3R5";
+      };
+      root.initialHashedPassword = "$y$j9T$uJcKGpp54PUa26YSvcx2p/$uTtpTgM5iCGMy8TbZMic34Cy4AuL6Nr8leJi0UVxPT.";
+    };
   };
 
   services = {
@@ -45,11 +53,6 @@
     udev.packages = [ pkgs.yubikey-personalization ];
     pcscd.enable = true;
     pipewire.enable = true;
-    # btrfs.autoScrub = {
-    #   enable = true;
-    #   interval = "monthly";
-    #   fileSystems = [ "/" ];
-    # };
   };
 
   environment.systemPackages = with pkgs; [

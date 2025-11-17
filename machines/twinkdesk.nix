@@ -4,11 +4,19 @@
     ./hardware/twinkdesk.nix
     ../shared.nix
   ];
+  boot.loader.efi.efiSysMountPoint = "/boot/efi"; 
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
   };
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services = {
+    xserver.videoDrivers = [ "nvidia" ];
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
+      fileSystems = [ "/" ];
+    };
+  };
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;

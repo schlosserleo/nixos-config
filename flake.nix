@@ -14,6 +14,9 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs-master";
     };
+    self = {
+      submodules = true;
+    };
   };
 
   outputs =
@@ -23,7 +26,8 @@
       ...
     }@inputs:
     {
-      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+      nixosConfigurations = {
+	vm = nixpkgs.lib.nixosSystem {
         modules = [
           ./machines/vm.nix
           {
@@ -41,5 +45,26 @@
           }
         ];
       };
+      twinkdesk = nixpkgs.lib.nixosSystem {
+	modules = [
+	./machines/twinkdesk.nix
+{
+
+            nixpkgs.overlays = [
+              inputs.neovim-nightly-overlay.overlays.default
+            ];
+}
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.leo = import ./home/twinkdesk.nix;
+            };
+          }
+];
+};
     };
+  };
 }
