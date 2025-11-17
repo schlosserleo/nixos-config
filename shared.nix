@@ -1,4 +1,7 @@
-{ pkgs, currentSystemName, ... }:
+{
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -12,43 +15,51 @@
       efi.canTouchEfiVariables = true;
     };
   };
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
-  nix = {
-    settings = {
-      substituters = [
-        "https://cache.nixos.org/"
-        "https://mitchellh-nixos-config.cachix.org"
-      ];
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "mitchellh-nixos-config.cachix.org-1:bjEbXJyLrL1HZZHBbO4QALnI5faYZppzkU4D2s0G8RQ="
-      ];
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
-  };
+  console.keyMap = "neoqwertz";
 
-  networking.hostName = "${currentSystemName}";
   time.timeZone = "Europe/Berlin";
 
   users.mutableUsers = false;
+  users.users.leo = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    hashedPassword = "$y$j9T$yNdH78UHzeQnPlNXL9mhl1$lCFH86eSjuG9Og.gpBXDavWOpbZE0dYb/jeaRr2V3R5";
+  };
 
   services = {
+    xserver.xkb = {
+      layout = "de";
+      variant = "neo_qwertz";
+    };
+    openssh = {
+      enable = true;
+      settings = {
+        PermitRootLogin = "prohibit-password";
+      };
+    };
     udev.packages = [ pkgs.yubikey-personalization ];
     pcscd.enable = true;
     pipewire.enable = true;
-    btrfs.autoScrub = {
-      enable = true;
-      interval = "monthly";
-      fileSystems = [ "/" ];
-    };
+    # btrfs.autoScrub = {
+    #   enable = true;
+    #   interval = "monthly";
+    #   fileSystems = [ "/" ];
+    # };
   };
 
   environment.systemPackages = with pkgs; [
     vim
+    wget
+    git
     unzip
+    gcc15
+    cargo
+    tealdeer
   ];
 
   system.stateVersion = "25.11";

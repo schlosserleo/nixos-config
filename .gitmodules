@@ -1,0 +1,3 @@
+[submodule "home/config/neovim-config"]
+	path = home/config/neovim-config
+	url = ssh://git@git.twinkspace.org:2222/Leo/neovim-config

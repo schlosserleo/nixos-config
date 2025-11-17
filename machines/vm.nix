@@ -5,8 +5,5 @@
     ../shared.nix
   ];
 
-  services = {
-    qemuGuest.enable = true;
-    spice-vdagentd.enable = true;
-  };
+  virtualisation.vmware.guest.enable = true;
 }

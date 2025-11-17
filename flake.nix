@@ -1,51 +1,45 @@
 {
-  description = "Leos Nix Conf";
+  description = "NixOS from Scratch";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs";
+
     home-manager = {
-      url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-master";
     };
+
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs-master";
     };
   };
+
   outputs =
     {
-      self,
       nixpkgs,
       home-manager,
       ...
     }@inputs:
-    let
-      overlays = [
-        inputs.neovim-nightly-overlay.overlays.default
-      ];
-
-      mkSystem = import ./lib/mksystem.nix {
-        inherit overlays nixpkgs inputs;
-      };
-    in
     {
-      nixosConfigurations.vm = mkSystem "vm" {
-        system = "x86_64-linux";
-        user = "leo";
-      };
-      nixosConfigurations.vm2 = mkSystem "vm2" {
-        system = "x86_64-linux";
-        user = "leo";
-      };
-      nixosConfigurations.twinkpad = mkSystem "twinkpad" {
-        system = "x86_64-linux";
-        user = "leo";
-      };
-
-      nixosConfigurations.twinkdesk = mkSystem "twinkdesk" {
-        system = "x86_64-linux";
-        user = "leo";
+      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+        modules = [
+          ./machines/vm.nix
+          {
+            nixpkgs.overlays = [
+              inputs.neovim-nightly-overlay.overlays.default
+            ];
+          }
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.leo = import ./home/vm.nix;
+            };
+          }
+        ];
       };
     };
 }

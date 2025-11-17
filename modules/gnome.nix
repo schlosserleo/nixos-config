@@ -1,7 +1,11 @@
 { pkgs, ... }:
+
 {
   services = {
-    displayManager.gdm.enable = true;
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
     desktopManager.gnome.enable = true;
     gnome = {
       core-apps.enable = false;
@@ -16,7 +20,8 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    gnomeExtensions.appindicator 
-    gnomeExtensions.forge
+    gnomeExtensions.appindicator
+    nautilus
+    gnome-tweaks
   ];
 }
