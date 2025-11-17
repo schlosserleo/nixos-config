@@ -80,5 +80,12 @@ with lib.hm.gvariant;
       command = "nautilus -w";
       name = "File Explorer";
     };
+    dconf.settings = {
+      "org/gnome/Console" = {
+        custom-font = "Maple Mono NF 10";
+        theme = "auto";
+        use-system-font = false;
+      };
+    };
   };
 }
