@@ -20,6 +20,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    gnomeExtensions.dash-to-dock
     gnomeExtensions.appindicator
     nautilus
     gnome-tweaks

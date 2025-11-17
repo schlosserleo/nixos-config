@@ -13,6 +13,7 @@
   };
   xdg = {
     enable = true;
+    terminal-exec.enable = true;
     configFile."nvim" = {
       source = ./config/neovim-config;
       recursive = true;
