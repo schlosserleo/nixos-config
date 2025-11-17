@@ -67,6 +67,6 @@
       extraConfig = ''
         allow-loopback-pinentry
       '';
-      };
     };
+  };
 }

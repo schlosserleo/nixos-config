@@ -27,44 +27,44 @@
     }@inputs:
     {
       nixosConfigurations = {
-	vm = nixpkgs.lib.nixosSystem {
-        modules = [
-          ./machines/vm.nix
-          {
-            nixpkgs.overlays = [
-              inputs.neovim-nightly-overlay.overlays.default
-            ];
-          }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.leo = import ./home/vm.nix;
-            };
-          }
-        ];
+        vm = nixpkgs.lib.nixosSystem {
+          modules = [
+            ./machines/vm.nix
+            {
+              nixpkgs.overlays = [
+                inputs.neovim-nightly-overlay.overlays.default
+              ];
+            }
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.leo = import ./home/vm.nix;
+              };
+            }
+          ];
+        };
+        twinkdesk = nixpkgs.lib.nixosSystem {
+          modules = [
+            ./machines/twinkdesk.nix
+            {
+
+              nixpkgs.overlays = [
+                inputs.neovim-nightly-overlay.overlays.default
+              ];
+            }
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.leo = import ./home/twinkdesk.nix;
+              };
+            }
+          ];
+        };
       };
-      twinkdesk = nixpkgs.lib.nixosSystem {
-	modules = [
-	./machines/twinkdesk.nix
-{
-
-            nixpkgs.overlays = [
-              inputs.neovim-nightly-overlay.overlays.default
-            ];
-}
-
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.leo = import ./home/twinkdesk.nix;
-            };
-          }
-];
-};
     };
-  };
 }
