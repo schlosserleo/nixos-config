@@ -2,7 +2,7 @@
 {
   imports = [ ./shared.nix ];
   home.packages = with pkgs; [
-    gnome-console
-    epiphany
+    vmware-workstation
+    open-vm-tools
   ];
 }

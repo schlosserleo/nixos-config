@@ -6,6 +6,7 @@
   home = {
     stateVersion = "25.11";
     packages = with pkgs; [
+      gnome-console
       fastfetch
       (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
       yubioath-flutter
