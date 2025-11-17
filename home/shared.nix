@@ -9,6 +9,7 @@
       fastfetch
       (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
       yubioath-flutter
+      maple-mono.NF
     ];
   };
   xdg = {
@@ -44,6 +45,7 @@
         nixd
         lua-language-server
         nixfmt
+        ripgrep
       ];
     };
     gpg = {
