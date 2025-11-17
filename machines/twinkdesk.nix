@@ -1,10 +1,11 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ./hardware/twinkdesk.nix
     ../shared.nix
   ];
-  boot.loader.efi.efiSysMountPoint = "/boot/efi"; 
+
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -25,4 +26,15 @@
     powerManagement.finegrained = false;
     nvidiaSettings = true;
   };
+  virtualisation.vmware.host = {
+    extraPackages = with pkgs; [
+      open-vm-tools
+    ];
+    enable = true;
+    extraConfig = ''
+    mks.gl.allowUnsupportedDrivers = "TRUE"
+    mks.vk.allowUnsupportedDevices = "TRUE"
+    '';
+  };
+  users.users.leo.extraGroups = [ "audio" ];
 }

@@ -85,5 +85,8 @@ with lib.hm.gvariant;
       theme = "auto";
       use-system-font = false;
     };
+    "org/gnome/shell/extensions/dash-to-dock" = {
+      hot-keys = false;
+    };
   };
 }
