@@ -11,6 +11,7 @@
       (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
       yubioath-flutter
       maple-mono.NF
+      signal-desktop
     ];
   };
   xdg = {
