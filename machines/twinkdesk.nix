@@ -26,15 +26,18 @@
     powerManagement.finegrained = false;
     nvidiaSettings = true;
   };
-  virtualisation.vmware.host = {
-    extraPackages = with pkgs; [
-      open-vm-tools
-    ];
-    enable = true;
-    extraConfig = ''
-    mks.gl.allowUnsupportedDrivers = "TRUE"
-    mks.vk.allowUnsupportedDevices = "TRUE"
-    '';
+  virtualisation = {
+    vmware.host = {
+      extraPackages = with pkgs; [
+        open-vm-tools
+      ];
+      enable = true;
+      extraConfig = ''
+        mks.gl.allowUnsupportedDrivers = "TRUE"
+        mks.vk.allowUnsupportedDevices = "TRUE"
+      '';
+    };
+    libvirtd.enable = true;
   };
-  users.users.leo.extraGroups = [ "audio" ];
+  users.users.leo.extraGroups = [ "audio" "libvirtd" ];
 }

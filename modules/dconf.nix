@@ -6,10 +6,6 @@ with lib.hm.gvariant;
   dconf.enable = true;
   dconf.settings = {
     "org/gnome/mutter" = {
-      experimental-features = [
-        "scale-monitor-framebuffer"
-        "xwayland-native-scaling"
-      ];
       dynamic-workspaces = false;
     };
     "org/gnome/desktop/input-sources" = {
