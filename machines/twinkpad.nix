@@ -1,9 +1,7 @@
 { ... }:
 {
   imports = [
-    ./hardware/vm.nix
+    ./hardware/twinkpad.nix
     ../shared.nix
   ];
-
-  virtualisation.vmware.guest.enable = true;
 }
