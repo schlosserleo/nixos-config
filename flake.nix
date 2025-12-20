@@ -65,6 +65,25 @@
             }
           ];
         };
+
+        twinkpad = nixpkgs.lib.nixosSystem {
+          modules = [
+            ./machines/twinkpad.nix
+            {
+              nixpkgs.overlays = [
+                inputs.neovim-nightly-overlay.overlays.default
+              ];
+            }
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.leo = import ./home/twinkpad.nix;
+              };
+            }
+          ];
+        };
       };
     };
 }
