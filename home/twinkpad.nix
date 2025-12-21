@@ -5,5 +5,6 @@
     gnome-console
     epiphany
     loupe
+    steam
   ];
 }
