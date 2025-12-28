@@ -6,5 +6,7 @@
     epiphany
     loupe
     steam
+    gnome-system-monitor
+    gnome-disk-utility
   ];
 }
