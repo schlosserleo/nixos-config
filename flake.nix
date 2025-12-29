@@ -87,7 +87,7 @@
             {
               nixpkgs.overlays = [
                 inputs.neovim-nightly-overlay.overlays.default
-                inputs.nix-cachyos-kernel.overlays.default
+                inputs.nix-cachyos-kernel.overlays.pinned
               ];
             }
             home-manager.nixosModules.home-manager
