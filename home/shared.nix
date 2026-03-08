@@ -13,6 +13,7 @@
       maple-mono.NF
       signal-desktop
       mullvad-vpn
+      prismlauncher
     ];
   };
   xdg = {
