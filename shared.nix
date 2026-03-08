@@ -52,6 +52,7 @@
     udev.packages = [ pkgs.yubikey-personalization ];
     pcscd.enable = true;
     pipewire.enable = true;
+    mullvad-vpn.enable = true;
   };
 
   environment.systemPackages = with pkgs; [

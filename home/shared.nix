@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
     ../modules/dconf.nix
@@ -8,10 +8,11 @@
     packages = with pkgs; [
       gnome-console
       fastfetch
-      (wrapFirefox (firefox-unwrapped.override { pipewireSupport = true; }) { })
+      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       yubioath-flutter
       maple-mono.NF
       signal-desktop
+      mullvad-vpn
     ];
   };
   xdg = {

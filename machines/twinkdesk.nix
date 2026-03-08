@@ -1,11 +1,23 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   imports = [
     ./hardware/twinkdesk.nix
     ../shared.nix
   ];
 
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot = {
+    loader.efi.efiSysMountPoint = "/boot/efi";
+    supportedFilesystems = {
+      btrfs = true;
+      zfs = lib.mkForce false;
+      ntfs = true;
+    };
+  };
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -39,5 +51,8 @@
     };
     libvirtd.enable = true;
   };
-  users.users.leo.extraGroups = [ "audio" "libvirtd" ];
+  users.users.leo.extraGroups = [
+    "audio"
+    "libvirtd"
+  ];
 }
