@@ -14,4 +14,10 @@
   environment.systemPackages = with pkgs; [
     vulkan-tools
   ];
+
+  systemd.services."gnome-remote-desktop".wantedBy = [ "graphical.target" ];
+  networking.firewall = {
+    allowedTCPPorts = [ 3389 ];
+    allowedUDPPorts = [ 3389 ];
+  };
 }
