@@ -27,6 +27,7 @@ in
       signal-desktop
       mullvad-vpn
       prismlauncher-wrapped
+      graalvmPackages.graalvm-oracle
     ];
   };
   xdg = {
