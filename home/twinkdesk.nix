@@ -9,5 +9,6 @@
     virt-manager
     showtime
     papers
+    kdePackages.isoimagewriter
   ];
 }
