@@ -28,6 +28,7 @@ in
       mullvad-vpn
       prismlauncher-wrapped
       graalvmPackages.graalvm-oracle
+      tmux
     ];
   };
   xdg = {
