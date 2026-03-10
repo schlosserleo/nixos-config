@@ -10,5 +10,6 @@
     showtime
     papers
     kdePackages.isoimagewriter
+    libreoffice-fresh
   ];
 }
