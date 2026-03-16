@@ -9,6 +9,5 @@
     gnome-system-monitor
     gnome-disk-utility
     gnome-remote-desktop
-    samba
   ];
 }
