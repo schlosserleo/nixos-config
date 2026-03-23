@@ -11,6 +11,9 @@
   nixpkgs.config.allowUnfree = true;
 
   boot = {
+    supportedFilesystems = {
+      exfat = true;
+    };
     kernelPackages = pkgs.linuxPackages_zen;
     loader = {
       systemd-boot.enable = true;
@@ -60,9 +63,10 @@
     wget
     git
     unzip
-    gcc15
-    cargo
     tealdeer
+    exfatprogs
+    dosfstools
+    ntfsprogs
   ];
 
   system.stateVersion = "25.11";
