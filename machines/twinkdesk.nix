@@ -23,6 +23,7 @@
     enable32Bit = true;
   };
   services = {
+    flatpak.enable = true;
     xserver.videoDrivers = [ "nvidia" ];
     btrfs.autoScrub = {
       enable = true;
@@ -58,5 +59,6 @@
   users.users.leo.extraGroups = [
     "audio"
     "libvirtd"
+    "adbusers"
   ];
 }
