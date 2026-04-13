@@ -40,7 +40,7 @@ in
     enable = true;
     terminal-exec = {
       enable = true;
-      settings.default = [ "ghostty.desktop" ];
+      settings.default = [ "com.mitchellh.ghostty.desktop" ];
     };
     configFile."nvim" = {
       source = ./config/neovim-config;
