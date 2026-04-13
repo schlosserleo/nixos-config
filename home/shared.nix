@@ -1,6 +1,9 @@
 { inputs, pkgs, ... }:
 
 let
+  shellAliases = {
+    nixosrebuild = "sudo nixos-rebuild switch --flake"
+    };
   prismlauncher-wrapped = pkgs.symlinkJoin {
     name = "prismlauncher-wrapped";
     paths = [ pkgs.prismlauncher ];
@@ -23,16 +26,22 @@ in
       fastfetch
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       yubioath-flutter
-      maple-mono.NF
+      nerd-fonts.fantasque-sans-mono
       signal-desktop
       prismlauncher-wrapped
       graalvmPackages.graalvm-oracle
       tmux
     ];
+    sessionVariables = {
+      EDITOR = "nvim";
+    };
   };
   xdg = {
     enable = true;
-    terminal-exec.enable = true;
+    terminal-exec = {
+      enable = true;
+      settings.default = [ "ghostty.desktop" ];
+    };
     configFile."nvim" = {
       source = ./config/neovim-config;
       recursive = true;
@@ -56,6 +65,19 @@ in
         };
       };
     };
+    bash = {
+      enable = true;
+      shellAliases = shellAliases;
+    };
+    ghostty = {
+      enable = true;
+      installVimSyntax = true;
+      settings = {
+        theme = "light:GitHub Light Colorblind,dark:GitHub Dark Colorblind";
+        font-family = "";
+        font-size = 14;
+      };
+      };
     git = {
       enable = true;
       settings = {
