@@ -31,6 +31,7 @@ in
       prismlauncher-wrapped
       graalvmPackages.graalvm-oracle
       tmux
+      vlc
     ];
     sessionVariables = {
       EDITOR = "nvim";
