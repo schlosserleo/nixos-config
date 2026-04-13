@@ -2,8 +2,8 @@
 
 let
   shellAliases = {
-    nixosrebuild = "sudo nixos-rebuild switch --flake"
-    };
+    nixosrebuild = "sudo nixos-rebuild switch --flake";
+  };
   prismlauncher-wrapped = pkgs.symlinkJoin {
     name = "prismlauncher-wrapped";
     paths = [ pkgs.prismlauncher ];
@@ -77,7 +77,7 @@ in
         font-family = "";
         font-size = 14;
       };
-      };
+    };
     git = {
       enable = true;
       settings = {
