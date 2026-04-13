@@ -74,8 +74,8 @@ in
       installVimSyntax = true;
       settings = {
         theme = "light:GitHub Light Colorblind,dark:GitHub Dark Colorblind";
-        font-family = "";
-        font-size = 14;
+        font-family = "FantasqueSansM Nerd Font Mono";
+        font-size = 12;
       };
     };
     git = {
