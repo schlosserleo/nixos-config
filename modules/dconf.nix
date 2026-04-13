@@ -55,7 +55,7 @@ with lib.hm.gvariant;
     "org/gnome/shell" = {
       enabled-extensions = [
         "appindicatorsupport@rgcjonas.gmail.com"
-        "focuscontrol@itsfernn"
+        "focus-changer@heartmire"
         "tiling-assistant@leleat-on-github"
       ];
       favorite-apps = [
@@ -81,12 +81,6 @@ with lib.hm.gvariant;
       binding = "<Super>e";
       command = "nautilus -w";
       name = "File Explorer";
-    };
-    "org/gnome/shell/extensions/focuscontrol" = {
-      focus-down = [ "<Super>j" ];
-      focus-left = [ "<Super>h" ];
-      focus-right = [ "<Super>l" ];
-      focus-up = [ "<Super>k" ];
     };
     "org/gnome/shell/extensions/tiling-assistant" = {
       center-window = [ "<Shift><Super>c" ];

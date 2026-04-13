@@ -17,6 +17,6 @@
   environment.systemPackages = with pkgs; [
     gnomeExtensions.appindicator
     gnomeExtensions.tiling-assistant
-    gnomeExtensions.focus-control
+    gnomeExtensions.focus-changer
   ];
 }
