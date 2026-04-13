@@ -42,6 +42,15 @@
   };
 
   services = {
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
+      fileSystems = [ "/" ];
+    };
+    mullvad-vpn = {
+      enable = true;
+      package = pkgs.mullvad-vpn;
+    };
     xserver.xkb = {
       layout = "de";
       variant = "neo_qwertz";
@@ -55,7 +64,6 @@
     udev.packages = [ pkgs.yubikey-personalization ];
     pcscd.enable = true;
     pipewire.enable = true;
-    mullvad-vpn.enable = true;
   };
 
   environment.systemPackages = with pkgs; [

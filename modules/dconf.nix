@@ -55,7 +55,6 @@ with lib.hm.gvariant;
     "org/gnome/shell" = {
       enabled-extensions = [
         "appindicatorsupport@rgcjonas.gmail.com"
-        "dash-to-dock@micxgx.gmail.com"
       ];
     };
     "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -80,9 +79,6 @@ with lib.hm.gvariant;
       custom-font = "Maple Mono NF 10";
       theme = "auto";
       use-system-font = false;
-    };
-    "org/gnome/shell/extensions/dash-to-dock" = {
-      hot-keys = false;
     };
   };
 }
