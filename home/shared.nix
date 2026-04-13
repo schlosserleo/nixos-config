@@ -75,7 +75,7 @@ in
       settings = {
         theme = "light:GitHub Light Colorblind,dark:GitHub Dark Colorblind";
         font-family = "FantasqueSansM Nerd Font Mono";
-        font-size = 12;
+        font-size = 13;
       };
     };
     git = {
