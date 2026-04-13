@@ -7,6 +7,7 @@ with lib.hm.gvariant;
   dconf.settings = {
     "org/gnome/mutter" = {
       dynamic-workspaces = false;
+      workspaces-only-on-primary = false;
     };
     "org/gnome/desktop/input-sources" = {
       show-all-sources = true;
@@ -29,7 +30,6 @@ with lib.hm.gvariant;
       switch-to-workspace-3 = [ "<Super>3" ];
       switch-to-workspace-4 = [ "<Super>4" ];
       toggle-fullscreen = [ "<Super>f" ];
-      toggle-maximized = [ "<Shift><Super>f" ];
     };
     "org/gnome/shell/keybindings" = {
       show-screenshot-ui = [ "<Shift><Super>s" ];
@@ -55,6 +55,13 @@ with lib.hm.gvariant;
     "org/gnome/shell" = {
       enabled-extensions = [
         "appindicatorsupport@rgcjonas.gmail.com"
+        "focuscontrol@itsfernn"
+        "tiling-assistant@leleat-on-github"
+      ];
+      favorite-apps = [
+        "com.mitchellh.ghostty.desktop"
+        "org.gnome.Nautilus.desktop"
+        "zen-beta.desktop"
       ];
     };
     "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -74,6 +81,28 @@ with lib.hm.gvariant;
       binding = "<Super>e";
       command = "nautilus -w";
       name = "File Explorer";
+    };
+    "org/gnome/shell/extensions/focuscontrol" = {
+      focus-down = [ "<Super>j" ];
+      focus-left = [ "<Super>h" ];
+      focus-right = [ "<Super>l" ];
+      focus-up = [ "<Super>k" ];
+    };
+    "org/gnome/shell/extensions/tiling-assistant" = {
+      center-window = [ "<Shift><Super>c" ];
+      dynamic-keybinding-behavior = 2;
+      enable-advanced-experimental-features = true;
+      enable-tiling-popup = false;
+      last-version-installed = 54;
+      maximize-with-gap = true;
+      single-screen-gap = 6;
+      tile-bottom-half = [ "<Shift><Super>j" ];
+      tile-left-half = [ "<Shift><Super>h" ];
+      tile-maximize = [ "<Shift><Super>f" ];
+      tile-right-half = [ "<Shift><Super>l" ];
+      tile-top-half = [ "<Shift><Super>k" ];
+      toggle-tiling-popup = [ ];
+      window-gap = 6;
     };
   };
 }
