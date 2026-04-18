@@ -4,6 +4,19 @@
   lib,
   ...
 }:
+let
+  linux_git = pkgs.linuxManualConfig {
+    inherit (pkgs) stdenv lib;
+    version = "7.0.0-git";
+    modDirVersion = "7.0.0";
+    src = fetchGit {
+      url = "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git";
+      ref = "master";
+    };
+    configfile = /proc/config.gz |> builtins.readFile;
+    allowImportFromDerivation = true;
+  };
+in
 {
   imports = [
     ./hardware/twinkdesk.nix
@@ -12,6 +25,7 @@
 
   boot = {
     loader.efi.efiSysMountPoint = "/boot/efi";
+    kernelPackages = pkgs.linuxPackagesFor linux_git;
     supportedFilesystems = {
       btrfs = true;
       zfs = lib.mkForce false;
