@@ -12,7 +12,7 @@
 
   boot = {
     loader.efi.efiSysMountPoint = "/boot/efi";
-    kernelPackages = pkgs.linuxKernel.kernels.linux_testing;
+    kernelPackages = pkgs.linuxPackages_testing;
     supportedFilesystems = {
       btrfs = true;
       zfs = lib.mkForce false;
@@ -21,6 +21,7 @@
   };
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
   };
   services = {
     samba = {
