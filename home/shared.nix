@@ -29,7 +29,7 @@ in
       nerd-fonts.fantasque-sans-mono
       signal-desktop
       prismlauncher-wrapped
-      graalvmPackages.graalvm-oracle
+      openjdk25
       tmux
       vlc
     ];
