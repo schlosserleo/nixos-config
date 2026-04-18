@@ -13,7 +13,7 @@ let
       url = "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git";
       ref = "master";
     };
-    configfile = /proc/config.gz |> builtins.readFile;
+    configfile = ../kernel.config;
     allowImportFromDerivation = true;
   };
 in
