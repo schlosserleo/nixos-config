@@ -8,7 +8,7 @@
     enable = true;
     enable32Bit = true;
   };
-
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   virtualisation = {
     waydroid = {
       enable = true;
