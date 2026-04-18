@@ -23,6 +23,7 @@
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
+    "pipe-operators"
   ];
 
   console.keyMap = "neoqwertz";
