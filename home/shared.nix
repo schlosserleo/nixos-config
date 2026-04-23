@@ -51,8 +51,9 @@ in
   programs = {
     starship = {
       enable = true;
-      interactiveOnly = true;
       presets = [ "nerd-font-symbols" ];
+      enableFishIntegration = true;
+      enableTransience = true;
       settings = {
         add_newline = false;
       };
@@ -61,7 +62,6 @@ in
       enable = true;
       interactiveShellInit = ''
         set fish_greeting
-        enable_transience
       '';
     };
     ssh = {
