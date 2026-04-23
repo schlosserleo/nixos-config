@@ -9,7 +9,7 @@
     ../shared.nix
   ];
 
-  network.hostName = "twinkdesk";
+  networking.hostName = "twinkdesk";
 
   boot = {
     loader.efi.efiSysMountPoint = "/boot/efi";
