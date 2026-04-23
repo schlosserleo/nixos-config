@@ -91,6 +91,9 @@ in {
         command = "fish --login --interactive";
         theme = "light:GitHub Light Colorblind,dark:GitHub Dark Colorblind";
         font-family = "TX02 Nerd Font";
+        font-style-bold = "Bold";
+        font-style-italic = "Oblique";
+        font-style-bold-italic = "Bold Oblique";
         font-size = 11;
       };
     };

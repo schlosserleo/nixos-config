@@ -3,7 +3,9 @@
   config,
   lib,
   ...
-}: {
+}: let
+  monitorsXml = import ../home/config/twinkdesk.xml;
+in {
   imports = [
     ./hardware/twinkdesk.nix
     ../shared.nix
@@ -79,10 +81,15 @@
     };
     libvirtd.enable = true;
   };
-  systemd.services."virt-secret-init-encryption".serviceConfig.ExecStart = lib.mkForce [
-    "" # clears the original ExecStart
-    "/bin/sh -c 'umask 0077 && (dd if=/dev/random status=none bs=32 count=1 | systemd-creds encrypt --name=secrets-encryption-key - /var/lib/libvirt/secrets/secrets-encryption-key)'"
-  ];
+  systemd = {
+    tmpfiles.rules = [
+      "L+ /var/lib/gdm/seat0/config/monitors.xml - - - - ${monitorsXml}"
+    ];
+    services."virt-secret-init-encryption".serviceConfig.ExecStart = lib.mkForce [
+      "" # clears the original ExecStart
+      "/bin/sh -c 'umask 0077 && (dd if=/dev/random status=none bs=32 count=1 | systemd-creds encrypt --name=secrets-encryption-key - /var/lib/libvirt/secrets/secrets-encryption-key)'"
+    ];
+  };
   users.users.leo.extraGroups = [
     "audio"
     "libvirtd"
