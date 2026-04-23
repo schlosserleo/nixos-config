@@ -49,8 +49,22 @@ in
     };
   };
   programs = {
+    starship = {
+      enable = true;
+      interactiveOnly = true;
+      presets = [ "nerd-font-symbols" ];
+      settings = {
+        add_newline = false;
+      };
+    };
+    fish = {
+      enable = true;
+      interactiveShellInit = ''
+        set fish_greeting
+        enable_transience
+      '';
+    };
     ssh = {
-
       enable = true;
       enableDefaultConfig = false; # silences the warning
       matchBlocks."*" = {
@@ -74,6 +88,7 @@ in
       enable = true;
       installVimSyntax = true;
       settings = {
+        command = "fish --login --interactive";
         theme = "light:GitHub Light Colorblind,dark:GitHub Dark Colorblind";
         font-family = "FantasqueSansM Nerd Font Mono";
         font-size = 13;
