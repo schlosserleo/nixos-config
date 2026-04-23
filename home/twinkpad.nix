@@ -1,6 +1,5 @@
-{ pkgs, ... }:
-{
-  imports = [ ./shared.nix ];
+{pkgs, ...}: {
+  imports = [./shared.nix];
   home.packages = with pkgs; [
     gnome-console
     epiphany

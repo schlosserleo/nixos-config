@@ -1,21 +1,22 @@
-{ inputs, pkgs, ... }:
-
-let
+{
+  inputs,
+  pkgs,
+  ...
+}: let
   shellAliases = {
     nixosrebuild = "sudo nixos-rebuild switch --flake";
   };
   prismlauncher-wrapped = pkgs.symlinkJoin {
     name = "prismlauncher-wrapped";
-    paths = [ pkgs.prismlauncher ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
+    paths = [pkgs.prismlauncher];
+    nativeBuildInputs = [pkgs.makeWrapper];
 
     postBuild = ''
       wrapProgram $out/bin/prismlauncher \
         --set XDG_DATA_DIRS "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
     '';
   };
-in
-{
+in {
   imports = [
     ../modules/dconf.nix
   ];
@@ -41,7 +42,7 @@ in
     enable = true;
     terminal-exec = {
       enable = true;
-      settings.default = [ "com.mitchellh.ghostty.desktop" ];
+      settings.default = ["com.mitchellh.ghostty.desktop"];
     };
     configFile."nvim" = {
       source = ./config/neovim-config;
@@ -51,7 +52,7 @@ in
   programs = {
     starship = {
       enable = true;
-      presets = [ "nerd-font-symbols" ];
+      presets = ["nerd-font-symbols"];
       enableFishIntegration = true;
       enableTransience = true;
       settings = {

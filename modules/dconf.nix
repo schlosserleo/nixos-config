@@ -1,8 +1,5 @@
-{ lib, ... }:
-
-with lib.hm.gvariant;
-
-{
+{lib, ...}:
+with lib.hm.gvariant; {
   dconf.enable = true;
   dconf.settings = {
     "org/gnome/mutter" = {
@@ -19,24 +16,24 @@ with lib.hm.gvariant;
       ];
     };
     "org/gnome/desktop/wm/keybindings" = {
-      close = [ "<Shift><Super>q" ];
-      minimize = [ ];
-      move-to-workspace-1 = [ "<Shift><Super>1" ];
-      move-to-workspace-2 = [ "<Shift><Super>2" ];
-      move-to-workspace-3 = [ "<Shift><Super>3" ];
-      move-to-workspace-4 = [ "<Shift><Super>4" ];
-      switch-to-workspace-1 = [ "<Super>1" ];
-      switch-to-workspace-2 = [ "<Super>2" ];
-      switch-to-workspace-3 = [ "<Super>3" ];
-      switch-to-workspace-4 = [ "<Super>4" ];
-      toggle-fullscreen = [ "<Super>f" ];
+      close = ["<Shift><Super>q"];
+      minimize = [];
+      move-to-workspace-1 = ["<Shift><Super>1"];
+      move-to-workspace-2 = ["<Shift><Super>2"];
+      move-to-workspace-3 = ["<Shift><Super>3"];
+      move-to-workspace-4 = ["<Shift><Super>4"];
+      switch-to-workspace-1 = ["<Super>1"];
+      switch-to-workspace-2 = ["<Super>2"];
+      switch-to-workspace-3 = ["<Super>3"];
+      switch-to-workspace-4 = ["<Super>4"];
+      toggle-fullscreen = ["<Super>f"];
     };
     "org/gnome/shell/keybindings" = {
-      show-screenshot-ui = [ "<Shift><Super>s" ];
-      switch-to-application-1 = [ ];
-      switch-to-application-2 = [ ];
-      switch-to-application-3 = [ ];
-      switch-to-application-4 = [ ];
+      show-screenshot-ui = ["<Shift><Super>s"];
+      switch-to-application-1 = [];
+      switch-to-application-2 = [];
+      switch-to-application-3 = [];
+      switch-to-application-4 = [];
     };
     "org/gnome/desktop/session" = {
       idle-delay = mkUint32 0;
@@ -69,7 +66,7 @@ with lib.hm.gvariant;
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
       ];
-      screensaver = [ ];
+      screensaver = [];
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
       binding = "<Super>Return";
@@ -83,19 +80,19 @@ with lib.hm.gvariant;
       name = "File Explorer";
     };
     "org/gnome/shell/extensions/tiling-assistant" = {
-      center-window = [ "<Shift><Super>c" ];
+      center-window = ["<Shift><Super>c"];
       dynamic-keybinding-behavior = 2;
       enable-advanced-experimental-features = true;
       enable-tiling-popup = false;
       last-version-installed = 54;
       maximize-with-gap = true;
       single-screen-gap = 6;
-      tile-bottom-half = [ "<Shift><Super>j" ];
-      tile-left-half = [ "<Shift><Super>h" ];
-      tile-maximize = [ "<Shift><Super>f" ];
-      tile-right-half = [ "<Shift><Super>l" ];
-      tile-top-half = [ "<Shift><Super>k" ];
-      toggle-tiling-popup = [ ];
+      tile-bottom-half = ["<Shift><Super>j"];
+      tile-left-half = ["<Shift><Super>h"];
+      tile-maximize = ["<Shift><Super>f"];
+      tile-right-half = ["<Shift><Super>l"];
+      tile-top-half = ["<Shift><Super>k"];
+      toggle-tiling-popup = [];
       window-gap = 6;
     };
   };

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./hardware/twinkpad.nix
     ../shared.nix
@@ -16,11 +15,11 @@
     };
   };
 
-  systemd.services."gnome-remote-desktop".wantedBy = [ "graphical.target" ];
+  systemd.services."gnome-remote-desktop".wantedBy = ["graphical.target"];
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 3389 ];
-    allowedUDPPorts = [ 3389 ];
+    allowedTCPPorts = [3389];
+    allowedUDPPorts = [3389];
     allowPing = true;
   };
 

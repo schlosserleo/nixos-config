@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   imports = [
     ./hardware/vm.nix
     ../shared.nix

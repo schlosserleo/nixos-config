@@ -3,8 +3,7 @@
   config,
   lib,
   ...
-}:
-{
+}: {
   imports = [
     ./hardware/twinkdesk.nix
     ../shared.nix
@@ -55,7 +54,7 @@
       openFirewall = true;
     };
     flatpak.enable = true;
-    xserver.videoDrivers = [ "nvidia" ];
+    xserver.videoDrivers = ["nvidia"];
   };
   hardware.nvidia = {
     modesetting.enable = true;
