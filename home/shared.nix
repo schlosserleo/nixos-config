@@ -37,6 +37,7 @@ in {
     sessionVariables = {
       EDITOR = "nvim";
     };
+    file.".local/share/fonts/TX-02".source = ./config/fonts/TX-02;
   };
   xdg = {
     enable = true;

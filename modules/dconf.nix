@@ -2,6 +2,9 @@
 with lib.hm.gvariant; {
   dconf.enable = true;
   dconf.settings = {
+    "system/locale" = {
+      region = "de_DE.UTF-8";
+    };
     "org/gnome/mutter" = {
       dynamic-workspaces = false;
       workspaces-only-on-primary = false;
