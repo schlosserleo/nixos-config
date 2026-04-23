@@ -16,11 +16,14 @@
   };
 
   systemd.services."gnome-remote-desktop".wantedBy = ["graphical.target"];
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [3389];
-    allowedUDPPorts = [3389];
-    allowPing = true;
+  networking = {
+    hostname = "twinkpad";
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [3389];
+      allowedUDPPorts = [3389];
+      allowPing = true;
+    };
   };
 
   services = {

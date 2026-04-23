@@ -9,6 +9,8 @@
     ../shared.nix
   ];
 
+  network.hostName = "twinkdesk";
+
   boot = {
     loader.efi.efiSysMountPoint = "/boot/efi";
     kernelPackages = pkgs.linuxPackages_testing;
