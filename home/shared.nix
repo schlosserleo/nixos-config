@@ -91,7 +91,7 @@ in {
         command = "fish --login --interactive";
         theme = "light:GitHub Light Colorblind,dark:GitHub Dark Colorblind";
         font-family = "TX02 Nerd Font";
-        font-size = 13;
+        font-size = 11;
       };
     };
     git = {
