@@ -115,9 +115,9 @@ in
       enable = true;
       defaultEditor = true;
       extraPackages = with pkgs; [
+        alejandra
         nixd
         lua-language-server
-        nixfmt
         ripgrep
       ];
     };
