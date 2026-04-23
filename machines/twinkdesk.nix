@@ -4,7 +4,10 @@
   lib,
   ...
 }: let
-  monitorsXml = import ../home/config/twinkdesk.xml;
+  monitorsXml = pkgs.writeTextFile {
+    name = "twinkdesk-monitors.xml";
+    text = builtins.readFile ../home/config/twinkdesk.xml;
+  };
 in {
   imports = [
     ./hardware/twinkdesk.nix
