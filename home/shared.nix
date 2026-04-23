@@ -27,7 +27,6 @@ in {
       fastfetch
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       yubioath-flutter
-      nerd-fonts.fantasque-sans-mono
       signal-desktop
       prismlauncher-wrapped
       openjdk25
@@ -37,7 +36,6 @@ in {
     sessionVariables = {
       EDITOR = "nvim";
     };
-    file.".local/share/fonts/TX-02".source = ./config/fonts/TX-02;
   };
   xdg = {
     enable = true;
@@ -92,7 +90,7 @@ in {
       settings = {
         command = "fish --login --interactive";
         theme = "light:GitHub Light Colorblind,dark:GitHub Dark Colorblind";
-        font-family = "FantasqueSansM Nerd Font Mono";
+        font-family = "TX02 Nerd Font";
         font-size = 13;
       };
     };
