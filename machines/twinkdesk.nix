@@ -16,7 +16,7 @@ in {
 
   networking = {
     hostName = "twinkdesk";
-    firewall.allowedUDPPorts = [ 1900 ];
+    firewall.enable = false;
   };
 
   boot = {
