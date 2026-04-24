@@ -39,7 +39,7 @@
     users = {
       leo = {
         isNormalUser = true;
-        extraGroups = ["wheel"];
+        extraGroups = ["wheel" "input"];
         hashedPassword = "$y$j9T$yNdH78UHzeQnPlNXL9mhl1$lCFH86eSjuG9Og.gpBXDavWOpbZE0dYb/jeaRr2V3R5";
       };
       root.initialHashedPassword = "$y$j9T$uJcKGpp54PUa26YSvcx2p/$uTtpTgM5iCGMy8TbZMic34Cy4AuL6Nr8leJi0UVxPT.";
@@ -68,7 +68,7 @@
     };
     udev.packages = [
       pkgs.yubikey-personalization
-      pkgs.keychron-udev-rules
+      pkgs.qmk-udev-rules
     ];
     pcscd.enable = true;
     pipewire.enable = true;
