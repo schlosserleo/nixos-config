@@ -68,7 +68,6 @@
     };
     udev.packages = [
       pkgs.yubikey-personalization
-      pkgs.qmk-udev-rules
     ];
     pcscd.enable = true;
     pipewire.enable = true;

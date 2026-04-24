@@ -30,6 +30,11 @@ in {
     enable32Bit = true;
   };
   services = {
+    udev = {
+      extraRules = ''
+        KERNEL=="hidraw*", ATTRS{idVendor}=="4b42", ATTRS{idProduct}=="0105", TAG+="uaccess"
+      '';
+    };
     samba = {
       enable = true;
       openFirewall = true;
