@@ -66,7 +66,10 @@
         PermitRootLogin = "prohibit-password";
       };
     };
-    udev.packages = [pkgs.yubikey-personalization];
+    udev.packages = [
+      pkgs.yubikey-personalization
+      pkgs.keychron-udev-rules
+    ];
     pcscd.enable = true;
     pipewire.enable = true;
   };
