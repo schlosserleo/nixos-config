@@ -14,7 +14,10 @@ in {
     ../shared.nix
   ];
 
-  networking.hostName = "twinkdesk";
+  networking = {
+    hostName = "twinkdesk";
+    firewall.allowedUDPPorts = [ 1900 ];
+  };
 
   boot = {
     loader.efi.efiSysMountPoint = "/boot/efi";
@@ -34,36 +37,6 @@ in {
       extraRules = ''
         KERNEL=="hidraw*", ATTRS{idVendor}=="4b42", ATTRS{idProduct}=="0105", TAG+="uaccess"
       '';
-    };
-    samba = {
-      enable = true;
-      openFirewall = true;
-      settings = {
-        global = {
-          "workgroup" = "WORKGROUP";
-          "server string" = "smbnixdesk";
-          "netbios name" = "smbnixdesk";
-          "security" = "user";
-          "hosts allow" = "192.168.178. 127.0.0.1 localhost";
-          "hosts deny" = "0.0.0.0/0";
-          "guest account" = "nobody";
-          "map to guest" = "bad user";
-        };
-        "public" = {
-          "path" = "/home/leo/Music/";
-          "browseable" = "yes";
-          "read only" = "no";
-          "guest ok" = "yes";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force user" = "leo";
-          "force group" = "users";
-        };
-      };
-    };
-    samba-wsdd = {
-      enable = true;
-      openFirewall = true;
     };
     flatpak.enable = true;
     xserver.videoDrivers = ["nvidia"];
