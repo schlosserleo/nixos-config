@@ -17,6 +17,9 @@ in {
   networking = {
     hostName = "twinkdesk";
     firewall.enable = false;
+    hosts = {
+      "192.168.136.197" = ["nextcloud.local" "vaultwarden.local" "forgejo.local" "files.local"];
+    };
   };
 
   boot = {
