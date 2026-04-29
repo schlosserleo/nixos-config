@@ -47,6 +47,7 @@
   };
 
   services = {
+    tailscale.enable = true;
     btrfs.autoScrub = {
       enable = true;
       interval = "monthly";
