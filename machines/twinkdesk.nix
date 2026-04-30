@@ -24,7 +24,7 @@ in {
 
   boot = {
     loader.efi.efiSysMountPoint = "/boot/efi";
-    kernelPackages = pkgs.linuxPackages_testing;
+    kernelPackages = pkgs.linuxPackages_cachyos;
     supportedFilesystems = {
       btrfs = true;
       zfs = lib.mkForce false;
