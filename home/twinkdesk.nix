@@ -3,7 +3,7 @@
   home.packages = with pkgs; [
     steam
     mpv
-    google-chrome
+    ungoogled-chromium
     qbittorrent
     virt-manager
     showtime

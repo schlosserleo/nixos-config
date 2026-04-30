@@ -34,7 +34,7 @@
     };
   };
 
-  networking.hosts = {"100.100.91.26" = "twinkspace";};
+  networking.hosts = {"100.100.91.26" = ["twinkspace"];};
 
   users = {
     mutableUsers = false;
