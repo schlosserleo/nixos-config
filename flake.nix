@@ -15,10 +15,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # neovim-nightly-overlay = {
+    #   url = "github:nix-community/neovim-nightly-overlay";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
     self = {
       submodules = true;
@@ -35,9 +37,9 @@
         modules = [
           ./machines/vm.nix
           {
-            nixpkgs.overlays = [
-              inputs.neovim-nightly-overlay.overlays.default
-            ];
+            # nixpkgs.overlays = [
+            #   inputs.neovim-nightly-overlay.overlays.default
+            # ];
           }
           home-manager.nixosModules.home-manager
           {
@@ -55,7 +57,10 @@
           ./machines/twinkdesk.nix
           {
             nixpkgs.overlays = [
-              inputs.neovim-nightly-overlay.overlays.default
+              # inputs.neovim-nightly-overlay.overlays.default
+              inputs.nix-cachyos-kernel.overlays.default
+              # Skip deno tests (transitive dep of nix-cachyos-kernel, takes forever to build):
+              # (final: prev: { deno = prev.deno.overrideAttrs (_: { doCheck = false; }); })
             ];
           }
 
@@ -75,10 +80,9 @@
         modules = [
           ./machines/twinkpad.nix
           {
-            nixpkgs.overlays = [
-              inputs.neovim-nightly-overlay.overlays.default
-              inputs.nix-cachyos-kernel.overlays.pinned
-            ];
+            # nixpkgs.overlays = [
+            #   inputs.neovim-nightly-overlay.overlays.default
+            # ];
           }
           home-manager.nixosModules.home-manager
           {

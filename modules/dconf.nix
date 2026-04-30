@@ -18,9 +18,14 @@ with lib.hm.gvariant; {
         ])
       ];
     };
+    "org/gnome/desktop/wm/preferences" = {
+      resize-with-right-button = true;
+    };
     "org/gnome/desktop/wm/keybindings" = {
       close = ["<Shift><Super>q"];
       minimize = [];
+      move-to-monitor-left = ["<Shift><Control><Super>h"];
+      move-to-monitor-right = ["<Shift><Control><Super>l"];
       move-to-workspace-1 = ["<Shift><Super>1"];
       move-to-workspace-2 = ["<Shift><Super>2"];
       move-to-workspace-3 = ["<Shift><Super>3"];

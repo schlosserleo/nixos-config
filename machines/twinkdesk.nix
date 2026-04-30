@@ -22,9 +22,20 @@ in {
     };
   };
 
+  # Binary caches from nix-cachyos-kernel maintainer — avoids rebuilding deno/kernel from scratch.
+  # NOTE: apply this config BEFORE enabling the cachyos kernel so the cache is active in time.
+  # nix.settings = {
+  #   # Option A: maintainer's Attic cache
+  #   substituters = [ "https://attic.xuyh0120.win/lantian" ];
+  #   trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
+  #   # Option B: Garnix CI cache
+  #   # substituters = [ "https://cache.garnix.io" ];
+  #   # trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
+  # };
+
   boot = {
     loader.efi.efiSysMountPoint = "/boot/efi";
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
     supportedFilesystems = {
       btrfs = true;
       zfs = lib.mkForce false;
@@ -47,7 +58,7 @@ in {
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    # package = config.boot.kernelPackages.nvidiaPackages.beta;
     powerManagement.enable = true;
     powerManagement.finegrained = false;
     nvidiaSettings = true;

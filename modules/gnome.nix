@@ -11,5 +11,6 @@
     gnomeExtensions.appindicator
     gnomeExtensions.tiling-assistant
     gnomeExtensions.focus-changer
+    gnome-tweaks
   ];
 }
