@@ -12,12 +12,15 @@ in {
   imports = [
     ./hardware.nix
     ../common.nix
+    ../../modules/nixos/nvidia.nix
   ];
 
   networking = {
     hostName = "twinkdesk";
-    # FIXME: re-enable and explicitly open required ports
-    firewall.enable = false;
+    firewall = {
+      enable = true;
+      allowPing = true;
+    };
     hosts."192.168.136.197" = [
       "nextcloud.local"
       "vaultwarden.local"
@@ -42,24 +45,7 @@ in {
     })
   ];
 
-  hardware = {
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = [pkgs.nvidia-vaapi-driver];
-    };
-    nvidia = {
-      modesetting.enable = true;
-      open = true;
-      powerManagement.enable = true;
-      powerManagement.finegrained = false;
-      nvidiaSettings = true;
-      videoAcceleration = true;
-    };
-  };
-
   services = {
-    xserver.videoDrivers = ["nvidia"];
     flatpak.enable = true;
     udev.extraRules = ''
       KERNEL=="hidraw*", ATTRS{idVendor}=="4b42", ATTRS{idProduct}=="0105", TAG+="uaccess"
@@ -78,26 +64,9 @@ in {
     };
   };
 
-  systemd = {
-    tmpfiles.rules = [
-      "L+ /var/lib/gdm/seat0/config/monitors.xml - - - - ${monitorsXml}"
-    ];
-    # Workaround: upstream unit's ExecStart fails on this system; clear and reissue with explicit shell.
-    # services."virt-secret-init-encryption".serviceConfig.ExecStart = lib.mkForce [
-      # ""
-      # "/bin/sh -c 'umask 0077 && (dd if=/dev/random status=none bs=32 count=1 | systemd-creds encrypt --name=secrets-encryption-key - /var/lib/libvirt/secrets/secrets-encryption-key)'"
-    # ];
-  };
-
-  users.users.leo.extraGroups = [
-    "audio"
-    "libvirtd"
+  systemd.tmpfiles.rules = [
+    "L+ /var/lib/gdm/seat0/config/monitors.xml - - - - ${monitorsXml}"
   ];
 
-  environment.systemPackages = with pkgs; [
-    libva-utils
-    vdpauinfo
-    mesa-demos
-    nvtopPackages.nvidia
-  ];
+  users.users.leo.extraGroups = ["libvirtd"];
 }

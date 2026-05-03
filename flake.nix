@@ -15,24 +15,22 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
-    self.submodules = true;
-
     helium = {
       url = "github:schembriaiden/helium-browser-nix-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+
+    self.submodules = true;
   };
 
   outputs = {
-    self,
     nixpkgs,
     home-manager,
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
 
     mkHost = hostName:
       nixpkgs.lib.nixosSystem {
@@ -51,13 +49,11 @@
           }
         ];
       };
-  in {
-    nixosConfigurations = {
-      twinkdesk = mkHost "twinkdesk";
-      twinkpad = mkHost "twinkpad";
-      vm = mkHost "vm";
-    };
 
-    formatter.${system} = pkgs.alejandra;
+    hosts = ["twinkdesk" "twinkpad" "vm"];
+  in {
+    nixosConfigurations = nixpkgs.lib.genAttrs hosts mkHost;
+
+    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
   };
 }

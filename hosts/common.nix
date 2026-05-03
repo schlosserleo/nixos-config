@@ -1,36 +1,49 @@
 {pkgs, ...}: {
   imports = [
+    ../modules/nixos/audio.nix
     ../modules/nixos/gnome.nix
+    ../modules/nixos/users.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-      "pipe-operators"
-    ];
-    extra-substituters = [
-      "https://cache.garnix.io"
-      "https://attic.xuyh0120.win/lantian"
-    ];
-    extra-trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
-    ];
+  nix = {
+    settings = {
+      experimental-features = ["nix-command" "flakes" "pipe-operators"];
+      trusted-users = ["@wheel"];
+      warn-dirty = false;
+      auto-optimise-store = true;
+      extra-substituters = [
+        "https://cache.garnix.io"
+        "https://attic.xuyh0120.win/lantian"
+      ];
+      extra-trusted-public-keys = [
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      ];
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
+    };
+    optimise.automatic = true;
   };
 
   boot = {
     supportedFilesystems.exfat = true;
+    tmp.cleanOnBoot = true;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
   };
 
-  console.keyMap = "neoqwertz";
+  networking.hosts = {
+    "100.100.91.26" = ["twinkspace"];
+  };
 
+  console.keyMap = "neoqwertz";
   time.timeZone = "Europe/Berlin";
 
   i18n = {
@@ -40,23 +53,6 @@
       LC_MONETARY = "de_DE.UTF-8";
       LC_PAPER = "de_DE.UTF-8";
       LC_MEASUREMENT = "de_DE.UTF-8";
-    };
-  };
-
-  networking.hosts = {
-    "100.100.91.26" = ["twinkspace"];
-  };
-
-  users = {
-    mutableUsers = false;
-    users = {
-      leo = {
-        isNormalUser = true;
-        extraGroups = ["wheel" "input"];
-        # FIXME: move to sops-nix or agenix;
-        hashedPassword = "$y$j9T$yNdH78UHzeQnPlNXL9mhl1$lCFH86eSjuG9Og.gpBXDavWOpbZE0dYb/jeaRr2V3R5";
-      };
-      root.initialHashedPassword = "$y$j9T$uJcKGpp54PUa26YSvcx2p/$uTtpTgM5iCGMy8TbZMic34Cy4AuL6Nr8leJi0UVxPT.";
     };
   };
 
@@ -81,7 +77,6 @@
     };
     udev.packages = [pkgs.yubikey-personalization];
     pcscd.enable = true;
-    pipewire.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -93,13 +88,6 @@
     exfatprogs
     dosfstools
     ntfsprogs
-    gst_all_1.gstreamer
-    gst_all_1.gst-libav
-    gst_all_1.gst-vaapi
-    gst_all_1.gst-plugins-base
-    gst_all_1.gst-plugins-good
-    gst_all_1.gst-plugins-bad
-    gst_all_1.gst-plugins-ugly
   ];
 
   system.stateVersion = "25.11";

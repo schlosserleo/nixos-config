@@ -4,19 +4,71 @@
   lib,
   ...
 }: let
-  # prismlauncher launched outside GNOME doesn't see the schemas needed for file pickers etc.
-  prismlauncher-wrapped = pkgs.symlinkJoin {
-    name = "prismlauncher-wrapped";
-    paths = [pkgs.prismlauncher];
-    nativeBuildInputs = [pkgs.makeWrapper];
-    postBuild = ''
-      wrapProgram $out/bin/prismlauncher \
-        --set XDG_DATA_DIRS "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
-    '';
+  # Mozilla "Modern" OpenSSH client profile.
+  sshHardening = {
+    KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512";
+    Ciphers = "aes256-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-gcm@openssh.com,aes128-ctr";
+    MACs = "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com";
+    RequiredRSASize = "3072";
+    HostKeyAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
+    CASignatureAlgorithms = "sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
+    HostbasedAcceptedAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
+    PubkeyAcceptedAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
+  };
+
+  githubLight = {
+    alpha = "0.9";
+    background = "ffffff";
+    foreground = "24292f";
+    selection-background = "24292f";
+    selection-foreground = "ffffff";
+    cursor = "3c9cff 0969da";
+    regular0 = "24292f";
+    regular1 = "b35900";
+    regular2 = "0550ae";
+    regular3 = "4d2d00";
+    regular4 = "0969da";
+    regular5 = "8250df";
+    regular6 = "1b7c83";
+    regular7 = "6e7781";
+    bright0 = "57606a";
+    bright1 = "8a4600";
+    bright2 = "0969da";
+    bright3 = "633c01";
+    bright4 = "218bff";
+    bright5 = "a475f9";
+    bright6 = "3192aa";
+    bright7 = "8c959f";
+  };
+
+  githubDark = {
+    alpha = "0.9";
+    background = "0d1117";
+    foreground = "c9d1d9";
+    selection-background = "c9d1d9";
+    selection-foreground = "0d1117";
+    cursor = "98e6ff 58a6ff";
+    regular0 = "484f58";
+    regular1 = "ec8e2c";
+    regular2 = "58a6ff";
+    regular3 = "d29922";
+    regular4 = "58a6ff";
+    regular5 = "bc8cff";
+    regular6 = "39c5cf";
+    regular7 = "b1bac4";
+    bright0 = "6e7681";
+    bright1 = "fdac54";
+    bright2 = "79c0ff";
+    bright3 = "e3b341";
+    bright4 = "79c0ff";
+    bright5 = "d2a8ff";
+    bright6 = "56d4dd";
+    bright7 = "ffffff";
   };
 in {
   imports = [
     ../modules/home/dconf.nix
+    ../modules/home/prismlauncher.nix
   ];
 
   home = {
@@ -35,8 +87,6 @@ in {
       inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
       yubioath-flutter
       signal-desktop
-      prismlauncher-wrapped
-      openjdk25
       tmux
       vlc
     ];
@@ -67,56 +117,8 @@ in {
         };
         key-bindings.color-theme-toggle = "Control+Return";
         csd.preferred = "none";
-        # GitHub Light Colorblind
-        colors-light = {
-          alpha = "0.9";
-          background = "ffffff";
-          foreground = "24292f";
-          selection-background = "24292f";
-          selection-foreground = "ffffff";
-          cursor = "3c9cff 0969da";
-          regular0 = "24292f";
-          regular1 = "b35900";
-          regular2 = "0550ae";
-          regular3 = "4d2d00";
-          regular4 = "0969da";
-          regular5 = "8250df";
-          regular6 = "1b7c83";
-          regular7 = "6e7781";
-          bright0 = "57606a";
-          bright1 = "8a4600";
-          bright2 = "0969da";
-          bright3 = "633c01";
-          bright4 = "218bff";
-          bright5 = "a475f9";
-          bright6 = "3192aa";
-          bright7 = "8c959f";
-        };
-        # GitHub Dark Colorblind
-        colors-dark = {
-          alpha = "0.9";
-          background = "0d1117";
-          foreground = "c9d1d9";
-          selection-background = "c9d1d9";
-          selection-foreground = "0d1117";
-          cursor = "98e6ff 58a6ff";
-          regular0 = "484f58";
-          regular1 = "ec8e2c";
-          regular2 = "58a6ff";
-          regular3 = "d29922";
-          regular4 = "58a6ff";
-          regular5 = "bc8cff";
-          regular6 = "39c5cf";
-          regular7 = "b1bac4";
-          bright0 = "6e7681";
-          bright1 = "fdac54";
-          bright2 = "79c0ff";
-          bright3 = "e3b341";
-          bright4 = "79c0ff";
-          bright5 = "d2a8ff";
-          bright6 = "56d4dd";
-          bright7 = "ffffff";
-        };
+        colors-light = githubLight;
+        colors-dark = githubDark;
       };
     };
 
@@ -133,26 +135,13 @@ in {
       interactiveShellInit = ''
         set fish_greeting
       '';
-    };
-
-    bash = {
-      enable = true;
       shellAliases.nixosrebuild = "sudo nixos-rebuild switch --flake";
     };
 
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks."*".extraOptions = {
-        KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512";
-        Ciphers = "aes256-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-gcm@openssh.com,aes128-ctr";
-        MACs = "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com";
-        RequiredRSASize = "3072";
-        HostKeyAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-        CASignatureAlgorithms = "sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-        HostbasedAcceptedAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-        PubkeyAcceptedAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-      };
+      matchBlocks."*".extraOptions = sshHardening;
     };
 
     ghostty = {
@@ -182,7 +171,7 @@ in {
         pull.rebase = true;
       };
       signing = {
-        key = "F7155193AF248B6A";
+        key = "3FBCCD34E0CB2CE67A71B241F7155193AF248B6A";
         signByDefault = true;
       };
     };
