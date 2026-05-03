@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
     home-manager = {
@@ -53,17 +54,9 @@
         ];
       };
       twinkdesk = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
         modules = [
           ./machines/twinkdesk.nix
-          {
-            nixpkgs.overlays = [
-              # inputs.neovim-nightly-overlay.overlays.default
-              inputs.nix-cachyos-kernel.overlays.default
-              # Skip deno tests (transitive dep of nix-cachyos-kernel, takes forever to build):
-              # (final: prev: { deno = prev.deno.overrideAttrs (_: { doCheck = false; }); })
-            ];
-          }
-
           home-manager.nixosModules.home-manager
           {
             home-manager = {

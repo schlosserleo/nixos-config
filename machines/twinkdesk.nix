@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  inputs,
   ...
 }: let
   monitorsXml = pkgs.writeTextFile {
@@ -24,18 +25,19 @@ in {
 
   # Binary caches from nix-cachyos-kernel maintainer — avoids rebuilding deno/kernel from scratch.
   # NOTE: apply this config BEFORE enabling the cachyos kernel so the cache is active in time.
-  # nix.settings = {
-  #   # Option A: maintainer's Attic cache
-  #   substituters = [ "https://attic.xuyh0120.win/lantian" ];
-  #   trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
-  #   # Option B: Garnix CI cache
-  #   # substituters = [ "https://cache.garnix.io" ];
-  #   # trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
-  # };
+  nix.settings = {
+    #   # Option A: maintainer's Attic cache
+    #   substituters = [ "https://attic.xuyh0120.win/lantian" ];
+    #   trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
+    #   # Option B: Garnix CI cache
+    extra-substituters = ["https://cache.garnix.io" "https://attic.xuyh0120.win/lantian"];
+    extra-trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="];
+  };
 
   boot = {
     loader.efi.efiSysMountPoint = "/boot/efi";
-    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+    kernelPackages = pkgs.linuxPackagesFor inputs.nix-cachyos-kernel.packages.x86_64-linux.linux-cachyos-latest;
+    # kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = {
       btrfs = true;
       zfs = lib.mkForce false;
@@ -45,6 +47,7 @@ in {
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = with pkgs; [nvidia-vaapi-driver];
   };
   services = {
     udev = {
