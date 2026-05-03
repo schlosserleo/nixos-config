@@ -21,12 +21,6 @@ in {
       enable = true;
       allowPing = true;
     };
-    hosts."192.168.136.197" = [
-      "nextcloud.local"
-      "vaultwarden.local"
-      "forgejo.local"
-      "files.local"
-    ];
   };
 
   boot = {
