@@ -79,6 +79,11 @@
     pcscd.enable = true;
   };
 
+  programs.nh = {
+    enable = true;
+    flake = "/home/leo/Projects/nixos-config";
+  };
+
   environment.systemPackages = with pkgs; [
     vim
     wget

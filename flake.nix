@@ -22,15 +22,31 @@
 
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     self.submodules = true;
   };
 
   outputs = {
+    self,
     nixpkgs,
     home-manager,
+    treefmt-nix,
+    git-hooks,
     ...
   } @ inputs: let
     system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+
+    treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
 
     mkHost = hostName:
       nixpkgs.lib.nixosSystem {
@@ -54,6 +70,28 @@
   in {
     nixosConfigurations = nixpkgs.lib.genAttrs hosts mkHost;
 
-    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+    formatter.${system} = treefmtEval.config.build.wrapper;
+
+    checks.${system} = {
+      formatting = treefmtEval.config.build.check self;
+
+      pre-commit = git-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          treefmt = {
+            enable = true;
+            package = treefmtEval.config.build.wrapper;
+          };
+          deadnix.enable = true;
+          statix.enable = true;
+          check-merge-conflicts.enable = true;
+        };
+      };
+    };
+
+    devShells.${system}.default = pkgs.mkShell {
+      inherit (self.checks.${system}.pre-commit) shellHook;
+      buildInputs = self.checks.${system}.pre-commit.enabledPackages;
+    };
   };
 }
