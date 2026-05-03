@@ -50,10 +50,11 @@ in {
     };
     nvidia = {
       modesetting.enable = true;
-      open = false;
+      open = true;
       powerManagement.enable = true;
       powerManagement.finegrained = false;
       nvidiaSettings = true;
+      videoAcceleration = true;
     };
   };
 
@@ -91,5 +92,12 @@ in {
   users.users.leo.extraGroups = [
     "audio"
     "libvirtd"
+  ];
+
+  environment.systemPackages = with pkgs; [
+    libva-utils
+    vdpauinfo
+    mesa-demos
+    nvtopPackages.nvidia
   ];
 }
