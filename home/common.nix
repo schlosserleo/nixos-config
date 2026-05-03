@@ -32,6 +32,7 @@ in {
       gnome-console
       fastfetch
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
       yubioath-flutter
       signal-desktop
       prismlauncher-wrapped
