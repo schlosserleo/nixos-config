@@ -1,10 +1,9 @@
 {
-  description = "NixOS from Scratch";
+  description = "Leo's NixOS configuration";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -16,78 +15,44 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # neovim-nightly-overlay = {
-    #   url = "github:nix-community/neovim-nightly-overlay";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
-    self = {
-      submodules = true;
-    };
+    self.submodules = true;
   };
 
   outputs = {
+    self,
     nixpkgs,
     home-manager,
     ...
-  } @ inputs: {
-    nixosConfigurations = {
-      vm = nixpkgs.lib.nixosSystem {
-        modules = [
-          ./machines/vm.nix
-          {
-            # nixpkgs.overlays = [
-            #   inputs.neovim-nightly-overlay.overlays.default
-            # ];
-          }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = {inherit inputs;};
-              users.leo = import ./home/vm.nix;
-            };
-          }
-        ];
-      };
-      twinkdesk = nixpkgs.lib.nixosSystem {
+  } @ inputs: let
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+
+    mkHost = hostName:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
         specialArgs = {inherit inputs;};
         modules = [
-          ./machines/twinkdesk.nix
+          ./hosts/${hostName}
           home-manager.nixosModules.home-manager
           {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = {inherit inputs;};
-              users.leo = import ./home/twinkdesk.nix;
+              users.leo = import ./home/${hostName}.nix;
             };
           }
         ];
       };
-
-      twinkpad = nixpkgs.lib.nixosSystem {
-        modules = [
-          ./machines/twinkpad.nix
-          {
-            # nixpkgs.overlays = [
-            #   inputs.neovim-nightly-overlay.overlays.default
-            # ];
-          }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = {inherit inputs;};
-              users.leo = import ./home/twinkpad.nix;
-            };
-          }
-        ];
-      };
+  in {
+    nixosConfigurations = {
+      twinkdesk = mkHost "twinkdesk";
+      twinkpad = mkHost "twinkpad";
+      vm = mkHost "vm";
     };
+
+    formatter.${system} = pkgs.alejandra;
   };
 }

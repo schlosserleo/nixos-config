@@ -1,7 +1,7 @@
 {...}: {
   imports = [
-    ./hardware/vm.nix
-    ../shared.nix
+    ./hardware.nix
+    ../common.nix
   ];
 
   virtualisation.vmware.guest.enable = true;

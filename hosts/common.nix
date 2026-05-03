@@ -1,24 +1,33 @@
 {pkgs, ...}: {
   imports = [
-    ./modules/gnome.nix
+    ../modules/nixos/gnome.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
 
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+      "pipe-operators"
+    ];
+    extra-substituters = [
+      "https://cache.garnix.io"
+      "https://attic.xuyh0120.win/lantian"
+    ];
+    extra-trusted-public-keys = [
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+    ];
+  };
+
   boot = {
-    supportedFilesystems = {
-      exfat = true;
-    };
+    supportedFilesystems.exfat = true;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
   };
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-    "pipe-operators"
-  ];
 
   console.keyMap = "neoqwertz";
 
@@ -34,7 +43,9 @@
     };
   };
 
-  networking.hosts = {"100.100.91.26" = ["twinkspace"];};
+  networking.hosts = {
+    "100.100.91.26" = ["twinkspace"];
+  };
 
   users = {
     mutableUsers = false;
@@ -42,6 +53,7 @@
       leo = {
         isNormalUser = true;
         extraGroups = ["wheel" "input"];
+        # FIXME: move to sops-nix or agenix;
         hashedPassword = "$y$j9T$yNdH78UHzeQnPlNXL9mhl1$lCFH86eSjuG9Og.gpBXDavWOpbZE0dYb/jeaRr2V3R5";
       };
       root.initialHashedPassword = "$y$j9T$uJcKGpp54PUa26YSvcx2p/$uTtpTgM5iCGMy8TbZMic34Cy4AuL6Nr8leJi0UVxPT.";
@@ -65,13 +77,9 @@
     };
     openssh = {
       enable = true;
-      settings = {
-        PermitRootLogin = "prohibit-password";
-      };
+      settings.PermitRootLogin = "prohibit-password";
     };
-    udev.packages = [
-      pkgs.yubikey-personalization
-    ];
+    udev.packages = [pkgs.yubikey-personalization];
     pcscd.enable = true;
     pipewire.enable = true;
   };

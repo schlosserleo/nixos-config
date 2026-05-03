@@ -7,6 +7,7 @@
     desktopManager.gnome.enable = true;
     udev.packages = [pkgs.gnome-settings-daemon];
   };
+
   environment.systemPackages = with pkgs; [
     gnomeExtensions.appindicator
     gnomeExtensions.tiling-assistant

@@ -1,7 +1,7 @@
 {pkgs, ...}: {
-  imports = [./shared.nix];
+  imports = [./common.nix];
+
   home.packages = with pkgs; [
-    gnome-console
     epiphany
     loupe
     steam

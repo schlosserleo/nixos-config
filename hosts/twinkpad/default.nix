@@ -1,23 +1,11 @@
 {pkgs, ...}: {
   imports = [
-    ./hardware/twinkpad.nix
-    ../shared.nix
+    ./hardware.nix
+    ../common.nix
   ];
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  virtualisation = {
-    waydroid = {
-      enable = true;
-      package = pkgs.waydroid-nftables;
-    };
-  };
 
-  systemd.services."gnome-remote-desktop".wantedBy = ["graphical.target"];
   networking = {
-    hostname = "twinkpad";
+    hostName = "twinkpad";
     firewall = {
       enable = true;
       allowedTCPPorts = [3389];
@@ -25,6 +13,20 @@
       allowPing = true;
     };
   };
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  virtualisation.waydroid = {
+    enable = true;
+    package = pkgs.waydroid-nftables;
+  };
+
+  systemd.services."gnome-remote-desktop".wantedBy = ["graphical.target"];
 
   services = {
     samba = {

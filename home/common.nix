@@ -4,14 +4,11 @@
   lib,
   ...
 }: let
-  shellAliases = {
-    nixosrebuild = "sudo nixos-rebuild switch --flake";
-  };
+  # prismlauncher launched outside GNOME doesn't see the schemas needed for file pickers etc.
   prismlauncher-wrapped = pkgs.symlinkJoin {
     name = "prismlauncher-wrapped";
     paths = [pkgs.prismlauncher];
     nativeBuildInputs = [pkgs.makeWrapper];
-
     postBuild = ''
       wrapProgram $out/bin/prismlauncher \
         --set XDG_DATA_DIRS "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
@@ -19,16 +16,18 @@
   };
 in {
   imports = [
-    ../modules/dconf.nix
+    ../modules/home/dconf.nix
   ];
+
   home = {
+    stateVersion = "26.05";
+    # foot's theme.ini cannot be a Nix-store symlink because darkman rewrites it at runtime.
     activation.footThemeInit = lib.hm.dag.entryAfter ["writeBoundary"] ''
       if [ ! -f "$HOME/.config/foot/theme.ini" ]; then
         mkdir -p "$HOME/.config/foot"
         printf '[main]\ninitial-color-theme = dark\n' > "$HOME/.config/foot/theme.ini"
       fi
     '';
-    stateVersion = "26.05";
     packages = with pkgs; [
       gnome-console
       fastfetch
@@ -40,15 +39,13 @@ in {
       tmux
       vlc
     ];
-    sessionVariables = {
-      EDITOR = "nvim";
-    };
+    sessionVariables.EDITOR = "nvim";
   };
+
   xdg = {
     enable = true;
     terminal-exec = {
       enable = true;
-      #  settings.default = ["com.mitchellh.ghostty.desktop"];
       settings.default = ["foot.desktop"];
     };
     configFile."nvim" = {
@@ -56,6 +53,7 @@ in {
       recursive = true;
     };
   };
+
   programs = {
     foot = {
       enable = true;
@@ -66,14 +64,10 @@ in {
           pad = "10x10 center";
           include = "~/.config/foot/theme.ini";
         };
-        key-bindings = {
-          color-theme-toggle = "Control+Return";
-        };
-        csd = {
-          preferred = "none";
-        };
+        key-bindings.color-theme-toggle = "Control+Return";
+        csd.preferred = "none";
+        # GitHub Light Colorblind
         colors-light = {
-          # GitHub Light Colorblind
           alpha = "0.9";
           background = "ffffff";
           foreground = "24292f";
@@ -97,8 +91,8 @@ in {
           bright6 = "3192aa";
           bright7 = "8c959f";
         };
+        # GitHub Dark Colorblind
         colors-dark = {
-          # GitHub Dark Colorblind
           alpha = "0.9";
           background = "0d1117";
           foreground = "c9d1d9";
@@ -124,41 +118,42 @@ in {
         };
       };
     };
+
     starship = {
       enable = true;
       presets = ["no-nerd-font"];
       enableFishIntegration = true;
       enableTransience = true;
-      settings = {
-        add_newline = false;
-      };
+      settings.add_newline = false;
     };
+
     fish = {
       enable = true;
       interactiveShellInit = ''
         set fish_greeting
       '';
     };
-    ssh = {
-      enable = true;
-      enableDefaultConfig = false; # silences the warning
-      matchBlocks."*" = {
-        extraOptions = {
-          KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512";
-          Ciphers = "aes256-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-gcm@openssh.com,aes128-ctr";
-          MACs = "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com";
-          RequiredRSASize = "3072";
-          HostKeyAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-          CASignatureAlgorithms = "sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-          HostbasedAcceptedAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-          PubkeyAcceptedAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-        };
-      };
-    };
+
     bash = {
       enable = true;
-      shellAliases = shellAliases;
+      shellAliases.nixosrebuild = "sudo nixos-rebuild switch --flake";
     };
+
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      matchBlocks."*".extraOptions = {
+        KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512";
+        Ciphers = "aes256-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-gcm@openssh.com,aes128-ctr";
+        MACs = "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com";
+        RequiredRSASize = "3072";
+        HostKeyAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
+        CASignatureAlgorithms = "sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
+        HostbasedAcceptedAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
+        PubkeyAcceptedAlgorithms = "sk-ssh-ed25519-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
+      };
+    };
+
     ghostty = {
       enable = true;
       installVimSyntax = true;
@@ -172,6 +167,7 @@ in {
         font-size = 11;
       };
     };
+
     git = {
       enable = true;
       settings = {
@@ -189,9 +185,10 @@ in {
         signByDefault = true;
       };
     };
+
     neovim = {
-      package = pkgs.neovim-unwrapped;
       enable = true;
+      package = pkgs.neovim-unwrapped;
       defaultEditor = true;
       extraPackages = with pkgs; [
         alejandra
@@ -200,6 +197,7 @@ in {
         ripgrep
       ];
     };
+
     gpg = {
       enable = true;
       homedir = "/home/leo/.gnupg";
@@ -215,6 +213,7 @@ in {
       };
     };
   };
+
   services = {
     darkman = {
       enable = true;
