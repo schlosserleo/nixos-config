@@ -13,6 +13,7 @@ in {
     ./hardware.nix
     ../common.nix
     ../../modules/nixos/nvidia.nix
+    ../../modules/nixos/flatpak.nix
   ];
 
   networking = {
@@ -40,7 +41,6 @@ in {
   ];
 
   services = {
-    flatpak.enable = true;
     udev.extraRules = ''
       KERNEL=="hidraw*", ATTRS{idVendor}=="4b42", ATTRS{idProduct}=="0105", TAG+="uaccess"
     '';

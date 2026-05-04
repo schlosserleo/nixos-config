@@ -6,6 +6,7 @@
   imports = [
     ./hardware.nix
     ../common.nix
+    ../../modules/nixos/flatpak.nix
   ];
 
   networking = {
