@@ -58,9 +58,9 @@ in {
           "tiling-assistant@leleat-on-github"
         ];
         favorite-apps = [
-          "com.mitchellh.ghostty.desktop"
+          "foot.desktop"
           "org.gnome.Nautilus.desktop"
-          "zen-beta.desktop"
+          "helium.desktop"
         ];
       };
 
