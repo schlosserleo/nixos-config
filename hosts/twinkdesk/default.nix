@@ -34,12 +34,6 @@ in {
     };
   };
 
-  nixpkgs.overlays = [
-    (final: _prev: {
-      inherit (inputs.nixpkgs-master.legacyPackages.${final.stdenv.hostPlatform.system}) zed-editor;
-    })
-  ];
-
   services = {
     udev.extraRules = ''
       KERNEL=="hidraw*", ATTRS{idVendor}=="4b42", ATTRS{idProduct}=="0105", TAG+="uaccess"

@@ -12,6 +12,5 @@
     kdePackages.isoimagewriter
     libreoffice-fresh
     android-tools
-    zed-editor
   ];
 }
