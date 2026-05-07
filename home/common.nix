@@ -96,10 +96,6 @@ in {
       enable = true;
       settings.default = ["foot.desktop"];
     };
-    configFile."nvim" = {
-      source = ./config/neovim-config;
-      recursive = true;
-    };
   };
 
   programs = {
