@@ -16,7 +16,6 @@
   };
 
   githubLight = {
-    alpha = "0.9";
     background = "ffffff";
     foreground = "24292f";
     selection-background = "24292f";
@@ -41,7 +40,6 @@
   };
 
   githubDark = {
-    alpha = "0.9";
     background = "0d1117";
     foreground = "c9d1d9";
     selection-background = "c9d1d9";
