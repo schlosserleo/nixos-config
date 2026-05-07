@@ -184,7 +184,7 @@ in {
         nixd
         lua-language-server
         ripgrep
-        tree-sitter
+        luaPackages.tree-sitter-cli
       ];
     };
 
