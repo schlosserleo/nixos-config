@@ -84,7 +84,6 @@ in {
       inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
       yubioath-flutter
       signal-desktop
-      tmux
       vlc
     ];
     sessionVariables.EDITOR = "nvim";
@@ -99,6 +98,10 @@ in {
   };
 
   programs = {
+    tmux = {
+      enable = true;
+      mouse = true;
+    };
     foot = {
       enable = true;
       settings = {
@@ -181,6 +184,10 @@ in {
         tree-sitter
         gcc
       ];
+      waylandSupport = true;
+      initLua = ''
+        require("mainconfig")
+      '';
     };
 
     gpg = {
