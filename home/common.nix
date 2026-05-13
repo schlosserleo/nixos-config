@@ -85,6 +85,7 @@ in {
       yubioath-flutter
       signal-desktop
       vlc
+      graalvmPackages.graalvm-oracle
     ];
     sessionVariables.EDITOR = "nvim";
   };

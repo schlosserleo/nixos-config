@@ -11,5 +11,5 @@
     '';
   };
 in {
-  home.packages = [prismlauncher-wrapped pkgs.openjdk25];
+  home.packages = [prismlauncher-wrapped];
 }
