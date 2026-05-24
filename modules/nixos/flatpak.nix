@@ -4,7 +4,7 @@
   services.flatpak = {
     enable = true;
     packages = [
-      "io.github.tobagin.Ntfyr"
+      "moe.emmaexe.ntfyDesktop"
     ];
   };
 }
