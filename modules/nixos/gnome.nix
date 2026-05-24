@@ -2,7 +2,6 @@
   services = {
     displayManager.gdm = {
       enable = true;
-      wayland = true;
     };
     desktopManager.gnome.enable = true;
     udev.packages = [pkgs.gnome-settings-daemon];
