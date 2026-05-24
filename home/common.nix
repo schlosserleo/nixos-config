@@ -186,7 +186,6 @@ in {
         tree-sitter
         gcc
       ];
-      waylandSupport = true;
       initLua = ''
         require("mainconfig")
       '';
