@@ -86,6 +86,7 @@ in {
       signal-desktop
       vlc
       graalvmPackages.graalvm-oracle
+      cozette
     ];
     sessionVariables.EDITOR = "nvim";
   };
