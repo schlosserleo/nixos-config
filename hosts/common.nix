@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   imports = [
     ../modules/nixos/audio.nix
-    ../modules/nixos/gnome.nix
     ../modules/nixos/users.nix
   ];
 

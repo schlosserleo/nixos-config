@@ -14,6 +14,7 @@ in {
     ../common.nix
     ../../modules/nixos/nvidia.nix
     ../../modules/nixos/flatpak.nix
+    ../../modules/nixos/plasma.nix
   ];
 
   networking = {

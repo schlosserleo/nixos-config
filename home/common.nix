@@ -63,11 +63,6 @@
     bright7 = "ffffff";
   };
 in {
-  imports = [
-    ../modules/home/dconf.nix
-    ../modules/home/prismlauncher.nix
-  ];
-
   home = {
     stateVersion = "26.05";
     # foot's theme.ini cannot be a Nix-store symlink because darkman rewrites it at runtime.
@@ -78,7 +73,6 @@ in {
       fi
     '';
     packages = with pkgs; [
-      gnome-console
       fastfetch
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -208,33 +202,34 @@ in {
   };
 
   services = {
-    darkman = {
-      enable = true;
-      settings = {
-        lat = 52.518611;
-        lng = 13.408333;
-      };
-      darkModeScripts = {
-        gtk-theme = ''
-          ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
-        '';
-        foot-theme = ''
-          printf '[main]\ninitial-color-theme = dark\n' > "$HOME/.config/foot/theme.ini"
-        '';
-      };
-      lightModeScripts = {
-        gtk-theme = ''
-          ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-light'"
-        '';
-        foot-theme = ''
-          printf '[main]\ninitial-color-theme = light\n' > "$HOME/.config/foot/theme.ini"
-        '';
-      };
-    };
+    # darkman = {
+    #   enable = true;
+    #   settings = {
+    #     lat = 52.518611;
+    #     lng = 13.408333;
+    #   };
+    #   darkModeScripts = {
+    #     gtk-theme = ''
+    #       ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+    #     '';
+    #     foot-theme = ''
+    #       printf '[main]\ninitial-color-theme = dark\n' > "$HOME/.config/foot/theme.ini"
+    #     '';
+    #   };
+    #   lightModeScripts = {
+    #     gtk-theme = ''
+    #       ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-light'"
+    #     '';
+    #     foot-theme = ''
+    #       printf '[main]\ninitial-color-theme = light\n' > "$HOME/.config/foot/theme.ini"
+    #     '';
+    #   };
+    # };
 
     gpg-agent = {
       enable = true;
-      pinentry.package = pkgs.pinentry-gnome3;
+      # pinentry.package = pkgs.pinentry-gnome3;
+      pinentry.package = pkgs.pinentry-qt;
       extraConfig = ''
         allow-loopback-pinentry
       '';

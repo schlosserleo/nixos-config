@@ -7,6 +7,7 @@
     ./hardware.nix
     ../common.nix
     ../../modules/nixos/flatpak.nix
+    ../../modules/nixos/gnome.nix
   ];
 
   networking = {
