@@ -3,12 +3,7 @@
   lib,
   inputs,
   ...
-}: let
-  monitorsXml = pkgs.writeTextFile {
-    name = "twinkdesk-monitors.xml";
-    text = builtins.readFile ../../home/config/twinkdesk.xml;
-  };
-in {
+}: {
   imports = [
     ./hardware.nix
     ../common.nix
@@ -54,9 +49,9 @@ in {
     };
   };
 
-  systemd.tmpfiles.rules = [
-    "L+ /var/lib/gdm/seat0/config/monitors.xml - - - - ${monitorsXml}"
-  ];
+  # systemd.tmpfiles.rules = [
+  #   "L+ /var/lib/gdm/seat0/config/monitors.xml - - - - ${monitorsXml}"
+  # ];
 
   users.users.leo.extraGroups = ["libvirtd"];
 }
