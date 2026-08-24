@@ -1,14 +1,22 @@
 { pkgs, ... }:
 {
-	imports = [
-		./dconf.nix
-	];
+  imports = [
+    ./dconf.nix
+  ];
 
   home = {
     stateVersion = "26.05";
     packages = with pkgs; [
       claude-code
     ];
+  };
+
+  xdg = {
+    enable = true;
+    terminal-exec = {
+      enable = true;
+      settings.default = [ "org.gnome.Console.desktop" ];
+    };
   };
 
   services = {
