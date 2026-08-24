@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   home = {
     stateVersion = "26.05";
@@ -12,8 +12,8 @@
       enable = true;
       pinentry.package = pkgs.pinentry-gnome3;
       extraConfig = ''
-        				allow-loopback-pinentry
-        				'';
+        allow-loopback-pinentry
+      '';
     };
   };
 
@@ -43,13 +43,12 @@
         nixd
         nixfmt
         lua-language-server
-        claude-code
       ];
       sideloadInitLua = true;
     };
+
     gpg = {
       enable = true;
-      homedir = "/home/leo/.gnupg";
       publicKeys = [
         {
           source = ./gpgpub.key;
