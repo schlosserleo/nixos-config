@@ -7,10 +7,12 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # CachyOS kernel & friends. Deliberately NOT following our nixpkgs:
-    # chaotic's binary cache is built against *its own* pinned nixpkgs, and a
-    # `follows` here would change every hash and force a full kernel compile.
+    # not following nixpkgs cause i use cachyos kernel and dont want to compile self
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    disko = {
+      url = "github:nix-community/disko/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -19,6 +21,7 @@
       nixpkgs,
       home-manager,
       chaotic,
+      disko,
       ...
     }@inputs:
     let
@@ -34,6 +37,7 @@
         lib.nixosSystem {
           specialArgs = { inherit inputs user; };
           modules = [
+            disko.nixosModules.disko
             ./hosts/${hostname}
             ./modules/common.nix
             { networking.hostName = lib.mkDefault hostname; }
