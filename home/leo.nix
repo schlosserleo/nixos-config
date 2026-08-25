@@ -31,6 +31,21 @@
   };
 
   programs = {
+    starship = {
+      enable = true;
+      presets = [ "no-nerd-font" ];
+      enableFishIntegration = true;
+      enableTransience = true;
+      settings.add_newline = false;
+    };
+
+    fish = {
+      enable = true;
+      interactiveShellInit = ''
+        set fish_greeting
+      '';
+    };
+
     git = {
       enable = true;
       settings = {
