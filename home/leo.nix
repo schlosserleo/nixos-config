@@ -9,12 +9,9 @@
     stateVersion = "26.05";
     packages = with pkgs; [
       claude-code
+			fastfetch
     ];
   };
-
-	packages = with pkgs; [
-		fastfetch
-	];
 
   xdg = {
     enable = true;
