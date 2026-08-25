@@ -69,7 +69,7 @@
   programs = {
     starship = {
       enable = true;
-      presets = [ "no-nerd-font" ];
+      presets = [ "nerd-font-symbols" ];
       enableFishIntegration = true;
       enableTransience = true;
       settings.add_newline = false;
