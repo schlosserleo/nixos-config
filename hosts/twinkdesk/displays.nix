@@ -1,28 +1,17 @@
-{
-  config,
-  lib,
-  user,
-  ...
-}:
+{ user, ... }:
 let
   # GNOME Settings writes this file when displays are rearranged. Keeping the
-  # copy in the repo authoritative means the layout survives a fresh install,
-  # and gives GDM something to read — see below.
+  # copy in the repo authoritative means the layout survives a fresh install.
   monitors = ./monitors.xml;
-
-  greeters = lib.filter (u: lib.hasPrefix "gdm-greeter" u.name) (
-    lib.attrValues config.users.users
-  );
 in
 {
   home-manager.users.${user}.xdg.configFile."monitors.xml".source = monitors;
 
-  # The greeter runs as its own user (gdm-greeter, plus -2..-5 for further
-  # seats) and mutter only looks at $HOME/.config/monitors.xml, so without
-  # this GDM comes up with its own idea of the layout. Those homes sit under
-  # /run, so they have to be recreated every boot.
-  systemd.tmpfiles.rules = lib.concatMap (u: [
-    "d ${u.home}/.config 0711 ${u.name} gdm"
-    "L+ ${u.home}/.config/monitors.xml - - - - ${monitors}"
-  ]) greeters;
+  # And this is the copy GDM reads. mutter looks for monitors.xml in every
+  # XDG system config dir before it looks at the per-user one, and the greeter
+  # inherits no XDG_CONFIG_DIRS, so glib falls back to /etc/xdg. Dropping it
+  # in the greeter's own ~/.config does not work: the greeter runs as
+  # gdm-greeter, whose home lives on tmpfs under /run/gdm/home and is torn
+  # down with the session.
+  environment.etc."xdg/monitors.xml".source = monitors;
 }
