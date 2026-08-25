@@ -12,6 +12,10 @@
     ];
   };
 
+	packages = with pkgs; [
+		fastfetch
+	];
+
   xdg = {
     enable = true;
     terminal-exec = {

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, user, ... }:
 {
   imports = [
     ./btrfs.nix
@@ -48,4 +48,9 @@
     git
     neovim
   ];
+
+	programs.nh = {
+		enable = true;
+		flake = "/home/${user}/Projects/nixos-config";
+	};
 }
