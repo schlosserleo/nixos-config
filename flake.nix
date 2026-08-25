@@ -12,6 +12,10 @@
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    helium-flake = {
+      url = "github:oxcl/nix-flake-helium-browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -21,6 +25,7 @@
       home-manager,
       chaotic,
       disko,
+      helium-flake,
       ...
     }@inputs:
     let
@@ -36,6 +41,7 @@
         lib.nixosSystem {
           specialArgs = { inherit inputs user; };
           modules = [
+            { nixpkgs.overlays = [ helium-flake.overlays.default ]; }
             disko.nixosModules.disko
             ./hosts/${hostname}
             ./modules/common.nix

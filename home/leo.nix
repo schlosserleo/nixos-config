@@ -11,6 +11,7 @@
       claude-code
 			fastfetch
 			ripgrep
+			helium
     ];
   };
 
