@@ -7,6 +7,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ./displays.nix
     ./disko.nix
   ];
   system.stateVersion = "26.05";
