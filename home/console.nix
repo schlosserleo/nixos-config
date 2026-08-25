@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   inherit (lib.hm.gvariant)
     mkArray
@@ -130,9 +130,13 @@ let
   ];
 in
 {
+  home.packages = [ pkgs.maple-mono.NF ];
+
   dconf.settings."org/gnome/Console" = {
     theme = "auto";
     livery = uuid;
+    use-system-font = false;
+    custom-font = "Maple Mono NF 11";
     custom-liveries = mkArray "{sv}" [
       (mkDictionaryEntry [
         (mkString uuid)

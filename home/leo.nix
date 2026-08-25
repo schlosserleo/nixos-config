@@ -10,6 +10,7 @@
     packages = with pkgs; [
       claude-code
 			fastfetch
+			ripgrep
     ];
   };
 
