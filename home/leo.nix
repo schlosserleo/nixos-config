@@ -9,11 +9,12 @@
     stateVersion = "26.05";
     packages = with pkgs; [
       claude-code
-			fastfetch
-			ripgrep
-			helium
-			tutanota-desktop
-			signal-desktop
+      fastfetch
+      ripgrep
+      helium
+      tutanota-desktop
+      signal-desktop
+      yubioath-flutter
     ];
   };
 
@@ -106,6 +107,10 @@
         nixd
         nixfmt
         lua-language-server
+        # nvim-treesitter (main) builds parsers with the tree-sitter CLI and a
+        # C compiler; neither is bundled with Neovim.
+        tree-sitter
+        gcc
       ];
       sideloadInitLua = true;
     };
