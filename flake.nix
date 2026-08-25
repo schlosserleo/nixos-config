@@ -7,7 +7,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # not following nixpkgs cause i use cachyos kernel and dont want to compile self
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     disko = {
       url = "github:nix-community/disko/latest";
