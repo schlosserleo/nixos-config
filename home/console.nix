@@ -136,7 +136,7 @@ in
     theme = "auto";
     livery = uuid;
     use-system-font = false;
-    custom-font = "Maple Mono NF 11";
+    custom-font = "Maple Mono NF 12";
     custom-liveries = mkArray "{sv}" [
       (mkDictionaryEntry [
         (mkString uuid)
