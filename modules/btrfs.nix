@@ -18,6 +18,7 @@ in
   systemd.services.check-resume-offset = lib.mkIf (swapfiles != [ ] && config.boot.resumeDevice != "") (
     let
       swapfile = (lib.head swapfiles).device;
+      offsetParam = lib.findFirst (p: lib.hasPrefix "resume_offset=" p) null config.boot.kernelParams;
     in
     {
       description = "Verify the hibernation resume offset still matches the swapfile";
@@ -31,12 +32,26 @@ in
       };
       script = ''
         actual=$(btrfs inspect-internal map-swapfile -r ${swapfile})
-        booted=$(cat /sys/power/resume_offset)
-        if [ "$actual" != "$booted" ]; then
-          echo "resume_offset is stale: booted with $booted, ${swapfile} now starts at $actual" >&2
+        configured=${if offsetParam == null then "" else lib.removePrefix "resume_offset=" offsetParam}
+
+        if [ -z "$configured" ]; then
+          echo "${swapfile} starts at $actual but boot.kernelParams sets no resume_offset" >&2
+          echo "hibernation cannot resume until resume_offset=$actual is added" >&2
+          exit 1
+        fi
+
+        if [ "$actual" != "$configured" ]; then
+          echo "resume_offset is stale: configured $configured, ${swapfile} now starts at $actual" >&2
           echo "hibernation will not resume until boot.kernelParams is updated to resume_offset=$actual" >&2
           exit 1
         fi
+
+        booted=$(cat /sys/power/resume_offset)
+        if [ "$booted" != "$actual" ]; then
+          echo "resume_offset $actual is correct, but this kernel booted with $booted - reboot to enable hibernation"
+          exit 0
+        fi
+
         echo "resume_offset $actual still matches ${swapfile}"
       '';
     }
