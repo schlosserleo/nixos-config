@@ -1,6 +1,7 @@
 { pkgs, user, ... }:
 {
   imports = [
+    ./airvpn.nix
     ./btrfs.nix
     ./gnome.nix
     ./users.nix
