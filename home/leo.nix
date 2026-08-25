@@ -12,6 +12,7 @@
 			fastfetch
 			ripgrep
 			helium
+			tutanota-desktop
     ];
   };
 
@@ -21,6 +22,36 @@
       enable = true;
       settings.default = [ "org.gnome.Console.desktop" ];
     };
+
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "x-scheme-handler/mailto" = "tutanota-desktop.desktop";
+        "x-scheme-handler/tuta" = "tutanota-desktop.desktop";
+        "x-scheme-handler/claude-cli" = "claude-code-url-handler.desktop";
+      };
+    };
+
+    # Tuta writes this file itself on startup with Exec= pointing at the raw
+    # extracted AppImage binary, which cannot run on NixOS. ~/.local/share
+    # outranks /etc/profiles in XDG_DATA_DIRS, so that copy shadows the
+    # packaged entry and breaks mailto. Pin it to the package's own entry.
+    dataFile."applications/tutanota-desktop.desktop".source =
+      "${pkgs.tutanota-desktop}/share/applications/tutanota-desktop.desktop";
+
+    # Keep Tuta running in the tray so its push connection stays up and new
+    # mail raises a notification. -a starts it hidden.
+    configFile."autostart/tutanota-desktop.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Tuta Mail
+      Comment=Tuta Mail background service
+      Exec=${pkgs.tutanota-desktop}/bin/tutanota-desktop -a
+      Icon=tutanota-desktop
+      Terminal=false
+      StartupNotify=false
+      X-GNOME-Autostart-enabled=true
+    '';
   };
 
   services = {

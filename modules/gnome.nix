@@ -9,6 +9,9 @@
 		epiphany
 	]);
 
+  # GNOME ships no tray; Tuta Mail needs one to stay reachable in the background.
+  environment.systemPackages = [ pkgs.gnomeExtensions.appindicator ];
+
   nixpkgs.overlays = [
     (final: prev: {
       # Backports from GNOME 51: custom liveries failed to deserialise, and

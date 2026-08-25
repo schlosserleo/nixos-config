@@ -29,6 +29,8 @@ in {
         toggle-fullscreen = ["<Super>f"];
       };
 
+      "org/gnome/shell".enabled-extensions = [ "appindicatorsupport@rgcjonas.gmail.com" ];
+
       "org/gnome/shell/keybindings" = {
         show-screenshot-ui = ["<Shift><Super>s"];
         switch-to-application-1 = [];
