@@ -13,6 +13,7 @@
 			ripgrep
 			helium
 			tutanota-desktop
+			signal-desktop
     ];
   };
 
