@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    ./console.nix
     ./dconf.nix
   ];
 
