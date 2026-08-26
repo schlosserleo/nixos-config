@@ -58,7 +58,6 @@
         "nix-command"
         "flakes"
       ];
-      auto-optimise-store = true;
     };
     gc = {
       automatic = true;
@@ -69,6 +68,8 @@
   };
 
   services = {
+    # LVFS carries UEFI, EC and Thunderbolt capsules for both machines.
+    fwupd.enable = true;
     pcscd.enable = true;
     tailscale.enable = true;
   };
