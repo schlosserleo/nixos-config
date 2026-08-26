@@ -33,6 +33,18 @@ in
   boot.resumeDevice = "/dev/disk/by-uuid/ff46ee8a-b7ae-4222-a27f-c5f2e287af36";
   boot.kernelParams = [ "resume_offset=2630912" ];
 
+  # This host boots from the 100M ESP Lenovo shipped, shared with the Windows
+  # install on p3, rather than one disko sized. After the Windows and
+  # systemd-boot files there are ~63M left, and a generation costs ~45M of
+  # kernel and initrd, so exactly one fits. Two would overflow the moment an
+  # initrd changed, and the builder copies before it prunes, so an overflow
+  # leaves a truncated initrd and no entry rather than a clean failure.
+  #
+  # The cost is that the boot menu offers no rollback. Growing the ESP, or
+  # giving the host an XBOOTLDR partition, is what buys that back.
+  # Until then, keep firmware-heavy modules such as amdgpu out of the initrd.
+  boot.loader.systemd-boot.configurationLimit = 1;
+
   # Synaptics 06cb:00f9, in the power button. libfprint drives it; enrol with
   # `fprintd-enroll` before it does anything.
   services.fprintd.enable = true;

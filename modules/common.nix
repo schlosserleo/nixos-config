@@ -1,4 +1,9 @@
-{ pkgs, user, ... }:
+{
+  lib,
+  pkgs,
+  user,
+  ...
+}:
 {
   imports = [
     ./airvpn.nix
@@ -45,7 +50,13 @@
     };
     tmp.cleanOnBoot = true;
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+        # Each generation costs a kernel plus an initrd on the ESP, so an
+        # unbounded list eventually fills it. Hosts whose ESP was not sized by
+        # disko override this.
+        configurationLimit = lib.mkDefault 10;
+      };
       efi.canTouchEfiVariables = true;
     };
   };
