@@ -15,9 +15,7 @@ in
     fileSystems = [ "/" ];
   };
 
-  # Deliberately not conditioned on boot.resumeDevice being set: a host with a
-  # swapfile and no resume device is precisely the case this check exists to
-  # catch, and common.nix hands every host suspend-then-hibernate.
+  # Not conditioned on boot.resumeDevice: an unset one is the case worth catching.
   systemd.services.check-resume-offset = lib.mkIf (swapfiles != [ ]) (
     let
       swapfile = (lib.head swapfiles).device;
@@ -66,12 +64,8 @@ in
     }
   );
 
-  # snapper keeps each config's snapshots in <SUBVOLUME>/.snapshots and fails
-  # the whole timeline run if one is missing. Nothing creates them: disko only
-  # lays out the subvolumes it is handed, and the NixOS module writes the
-  # configs without ever calling `snapper create-config`. A subvolume rather
-  # than a plain directory, so snapshotting the parent does not nest every
-  # earlier snapshot inside the new one.
+  # snapper fails the whole timeline run if <SUBVOLUME>/.snapshots is missing
+  # and nothing creates it. A subvolume, so parent snapshots do not nest these.
   systemd.services.snapper-subvolumes =
     let
       dirs = lib.mapAttrsToList (
@@ -81,8 +75,6 @@ in
     {
       description = "Create the .snapshots subvolume for each snapper config";
       wantedBy = [ "multi-user.target" ];
-      # The snapper units pull this in as well, so a config added later is
-      # covered without waiting for the next boot.
       requiredBy = [
         "snapper-timeline.service"
         "snapper-cleanup.service"
@@ -113,8 +105,7 @@ in
       home = {
         SUBVOLUME = "/home";
         ALLOW_USERS = [ user ];
-        # ALLOW_USERS only grants anything once snapper syncs the ACL onto
-        # the .snapshots directory.
+        # ALLOW_USERS does nothing without this.
         SYNC_ACL = true;
         TIMELINE_CREATE = true;
         TIMELINE_CLEANUP = true;
@@ -128,8 +119,7 @@ in
       root = {
         SUBVOLUME = "/";
         ALLOW_USERS = [ user ];
-        # ALLOW_USERS only grants anything once snapper syncs the ACL onto
-        # the .snapshots directory.
+        # ALLOW_USERS does nothing without this.
         SYNC_ACL = true;
         TIMELINE_CREATE = true;
         TIMELINE_CLEANUP = true;

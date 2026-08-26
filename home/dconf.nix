@@ -39,8 +39,6 @@ in {
         switch-to-application-4 = [];
       };
 
-      # Desktop-shaped defaults: a machine on mains has no reason to blank or
-      # suspend itself. Hosts on a battery override these.
       "org/gnome/desktop/session".idle-delay = lib.mkDefault (mkUint32 0);
       "org/gnome/settings-daemon/plugins/power".sleep-inactive-ac-type = lib.mkDefault "nothing";
       "org/gnome/desktop/peripherals/mouse".accel-profile = "flat";

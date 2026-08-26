@@ -27,7 +27,7 @@
   console.keyMap = "neoqwertz";
   time.timeZone = "Europe/Berlin";
 
-  # dconf sets the layout for the GNOME session; this covers GDM and the console.
+  # dconf covers the GNOME session; this is GDM and the console.
   services.xserver.xkb = {
     layout = "de";
     variant = "neo_qwertz";
@@ -52,9 +52,7 @@
     loader = {
       systemd-boot = {
         enable = true;
-        # Each generation costs a kernel plus an initrd on the ESP, so an
-        # unbounded list eventually fills it. Hosts whose ESP was not sized by
-        # disko override this.
+        # Each generation costs a kernel and an initrd on the ESP.
         configurationLimit = lib.mkDefault 10;
       };
       efi.canTouchEfiVariables = true;
@@ -79,7 +77,6 @@
   };
 
   services = {
-    # LVFS carries UEFI, EC and Thunderbolt capsules for both machines.
     fwupd.enable = true;
     pcscd.enable = true;
     tailscale.enable = true;

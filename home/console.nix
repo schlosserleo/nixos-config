@@ -60,9 +60,8 @@ let
 
   uuid = "3f2d6b18-9c47-4d1e-8a05-7e6c1b93a2f4";
 
-  # projekt0n/github-nvim-theme: github_dark_colorblind
-  # ANSI 0/8 deviate: the theme maps them onto the background, hiding anything
-  # dimmed. These are Primer's own terminal grays.
+  # projekt0n/github-nvim-theme: github_dark_colorblind, except ANSI 0/8 --
+  # the theme maps those onto the background, hiding dimmed text.
   night = mkPalette {
     background = "#0d1117";
     foreground = "#c9d1d9";

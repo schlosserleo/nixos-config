@@ -27,7 +27,6 @@ in
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware = {
-    # 32-bit driver userspace, for Steam/Proton and wine.
     graphics.enable32Bit = true;
 
     nvidia = {
@@ -37,16 +36,13 @@ in
       # Runtime D3 needs PRIME offload, which this desktop does not use.
       powerManagement.finegrained = false;
       open = true;
-      # nvidia-settings is a GTK3 app, and GTK3 drags in cups, which is
-      # currently marked broken in nixpkgs. Its panels are X11-only anyway.
+      # Drags in GTK3 and so cups, broken in nixpkgs; X11-only anyway.
       nvidiaSettings = false;
 
       package = nvidiaPackage // {
-        # The CachyOS kernel zstd-compresses modules during modules_install,
-        # so nixpkgs' strip pass no longer sees them and DWARF sections keep a
-        # reference to the kernel .dev output, which trips the driver's empty
-        # allowedReferences. Strip inside modules_install instead, before the
-        # module is compressed.
+        # The CachyOS kernel compresses modules during modules_install, so
+        # nixpkgs' strip pass misses them and DWARF references to the kernel
+        # .dev output trip allowedReferences. Strip before compression instead.
         open = nvidiaPackage.open.overrideAttrs (old: {
           installFlags = (old.installFlags or [ ]) ++ [ "INSTALL_MOD_STRIP=1" ];
         });

@@ -5,8 +5,7 @@
   ...
 }:
 let
-  # Stop charging at 80% and only resume below 75%. Bracketing the two keeps
-  # the EC from cycling the pack between 79 and 80 all day on the dock.
+  # Bracketed so the EC does not cycle the pack between 79 and 80 on the dock.
   chargeStart = 75;
   chargeEnd = 80;
   battery = "/sys/class/power_supply/BAT0";
@@ -26,35 +25,23 @@ in
     }
   ];
 
-  # The panel only supports s2idle, so a closed lid keeps drawing power until
-  # common.nix hands the session to hibernate; that needs somewhere to resume
-  # from. Offset from `btrfs inspect-internal map-swapfile -r /swap/swapfile`;
-  # check-resume-offset re-verifies it on every boot.
+  # s2idle only, so a closed lid has to reach hibernate. Offset from
+  # `btrfs inspect-internal map-swapfile -r /swap/swapfile`.
   boot.resumeDevice = "/dev/disk/by-uuid/ff46ee8a-b7ae-4222-a27f-c5f2e287af36";
   boot.kernelParams = [ "resume_offset=2630912" ];
 
-  # This host boots from the 100M ESP Lenovo shipped, shared with the Windows
-  # install on p3, rather than one disko sized. After the Windows and
-  # systemd-boot files there are ~63M left, and a generation costs ~45M of
-  # kernel and initrd, so exactly one fits. Two would overflow the moment an
-  # initrd changed, and the builder copies before it prunes, so an overflow
-  # leaves a truncated initrd and no entry rather than a clean failure.
-  #
-  # The cost is that the boot menu offers no rollback. Growing the ESP, or
-  # giving the host an XBOOTLDR partition, is what buys that back.
-  # Until then, keep firmware-heavy modules such as amdgpu out of the initrd.
+  # 100M ESP shared with Windows: ~63M usable against ~45M per generation, so
+  # one fits. The builder copies before it prunes, so overflowing leaves a
+  # truncated initrd rather than failing. Keep the initrd small.
   boot.loader.systemd-boot.configurationLimit = 1;
 
-  # Synaptics 06cb:00f9, in the power button. libfprint drives it; enrol with
-  # `fprintd-enroll` before it does anything.
   services.fprintd.enable = true;
 
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="power_supply", KERNEL=="BAT0", ATTR{charge_control_start_threshold}="${toString chargeStart}", ATTR{charge_control_end_threshold}="${toString chargeEnd}"
   '';
 
-  # The EC drops the thresholds across hibernation, and udev sees no new device
-  # on resume, so re-apply them by hand.
+  # udev sees no new device on resume, and the EC forgets the thresholds.
   powerManagement.resumeCommands = ''
     echo ${toString chargeStart} > ${battery}/charge_control_start_threshold
     echo ${toString chargeEnd} > ${battery}/charge_control_end_threshold
@@ -64,11 +51,9 @@ in
     { lib, ... }:
     {
       dconf.settings = {
-        # GNOME keeps one idle-delay for both power sources. 15 minutes is long
-        # enough not to interrupt reading and short enough to matter unplugged.
+        # One idle-delay covers both power sources.
         "org/gnome/desktop/session".idle-delay = lib.hm.gvariant.mkUint32 900;
 
-        # A machine that leaves the house needs a lock shortcut.
         "org/gnome/settings-daemon/plugins/media-keys".screensaver = [ "<Super>l" ];
 
         "org/gnome/desktop/peripherals/touchpad" = {

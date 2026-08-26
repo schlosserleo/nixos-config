@@ -34,15 +34,12 @@
       };
     };
 
-    # Tuta writes this file itself on startup with Exec= pointing at the raw
-    # extracted AppImage binary, which cannot run on NixOS. ~/.local/share
-    # outranks /etc/profiles in XDG_DATA_DIRS, so that copy shadows the
-    # packaged entry and breaks mailto. Pin it to the package's own entry.
+    # Tuta writes its own entry at startup pointing at the unpacked AppImage,
+    # and ~/.local/share shadows the packaged one, breaking mailto.
     dataFile."applications/tutanota-desktop.desktop".source =
       "${pkgs.tutanota-desktop}/share/applications/tutanota-desktop.desktop";
 
-    # Keep Tuta running in the tray so its push connection stays up and new
-    # mail raises a notification. -a starts it hidden.
+    # -a starts it hidden.
     configFile."autostart/tutanota-desktop.desktop".text = ''
       [Desktop Entry]
       Type=Application
@@ -107,8 +104,7 @@
         nixd
         nixfmt
         lua-language-server
-        # nvim-treesitter (main) builds parsers with the tree-sitter CLI and a
-        # C compiler; neither is bundled with Neovim.
+        # nvim-treesitter builds parsers with these.
         tree-sitter
         gcc
       ];
