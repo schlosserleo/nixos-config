@@ -15,7 +15,10 @@ in
     fileSystems = [ "/" ];
   };
 
-  systemd.services.check-resume-offset = lib.mkIf (swapfiles != [ ] && config.boot.resumeDevice != "") (
+  # Deliberately not conditioned on boot.resumeDevice being set: a host with a
+  # swapfile and no resume device is precisely the case this check exists to
+  # catch, and common.nix hands every host suspend-then-hibernate.
+  systemd.services.check-resume-offset = lib.mkIf (swapfiles != [ ]) (
     let
       swapfile = (lib.head swapfiles).device;
       offsetParam = lib.findFirst (p: lib.hasPrefix "resume_offset=" p) null config.boot.kernelParams;
@@ -31,6 +34,12 @@ in
         RemainAfterExit = true;
       };
       script = ''
+        if [ -z "${config.boot.resumeDevice}" ]; then
+          echo "${swapfile} is in use but boot.resumeDevice is unset" >&2
+          echo "the kernel has nowhere to resume from, so hibernation will fail" >&2
+          exit 1
+        fi
+
         actual=$(btrfs inspect-internal map-swapfile -r ${swapfile})
         configured=${if offsetParam == null then "" else lib.removePrefix "resume_offset=" offsetParam}
 
