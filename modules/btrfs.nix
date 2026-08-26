@@ -66,6 +66,44 @@ in
     }
   );
 
+  # snapper keeps each config's snapshots in <SUBVOLUME>/.snapshots and fails
+  # the whole timeline run if one is missing. Nothing creates them: disko only
+  # lays out the subvolumes it is handed, and the NixOS module writes the
+  # configs without ever calling `snapper create-config`. A subvolume rather
+  # than a plain directory, so snapshotting the parent does not nest every
+  # earlier snapshot inside the new one.
+  systemd.services.snapper-subvolumes =
+    let
+      dirs = lib.mapAttrsToList (
+        _: cfg: "${lib.removeSuffix "/" cfg.SUBVOLUME}/.snapshots"
+      ) config.services.snapper.configs;
+    in
+    {
+      description = "Create the .snapshots subvolume for each snapper config";
+      wantedBy = [ "multi-user.target" ];
+      # The snapper units pull this in as well, so a config added later is
+      # covered without waiting for the next boot.
+      requiredBy = [
+        "snapper-timeline.service"
+        "snapper-cleanup.service"
+      ];
+      before = [
+        "snapper-timeline.service"
+        "snapper-cleanup.service"
+      ];
+      after = [ "local-fs.target" ];
+      path = [ pkgs.btrfs-progs ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      script = lib.concatMapStrings (dir: ''
+        if [ ! -e ${lib.escapeShellArg dir} ]; then
+          btrfs subvolume create ${lib.escapeShellArg dir}
+        fi
+      '') dirs;
+    };
+
   services.snapper = {
     snapshotInterval = "hourly";
     cleanupInterval = "1d";
@@ -75,6 +113,9 @@ in
       home = {
         SUBVOLUME = "/home";
         ALLOW_USERS = [ user ];
+        # ALLOW_USERS only grants anything once snapper syncs the ACL onto
+        # the .snapshots directory.
+        SYNC_ACL = true;
         TIMELINE_CREATE = true;
         TIMELINE_CLEANUP = true;
         TIMELINE_LIMIT_HOURLY = 12;
@@ -87,6 +128,9 @@ in
       root = {
         SUBVOLUME = "/";
         ALLOW_USERS = [ user ];
+        # ALLOW_USERS only grants anything once snapper syncs the ACL onto
+        # the .snapshots directory.
+        SYNC_ACL = true;
         TIMELINE_CREATE = true;
         TIMELINE_CLEANUP = true;
         TIMELINE_LIMIT_HOURLY = 6;
