@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   user,
   ...
@@ -29,6 +30,10 @@ in
   # `btrfs inspect-internal map-swapfile -r /swap/swapfile`.
   boot.resumeDevice = "/dev/disk/by-uuid/ff46ee8a-b7ae-4222-a27f-c5f2e287af36";
   boot.kernelParams = [ "resume_offset=2630912" ];
+
+  # amdgpu crashes soon after resuming from hibernate on cachyos 7.2.4.
+  # Trying mainline to see whether the bug follows the kernel.
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
   # 100M ESP shared with Windows: ~63M usable against ~45M per generation, so
   # one fits. The builder copies before it prunes, so overflowing leaves a
