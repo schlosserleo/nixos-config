@@ -87,6 +87,9 @@
     neovim
   ];
 
+  # The client is 32-bit; a bare package has no i686 GL driver to load.
+  programs.steam.enable = true;
+
   programs.nh = {
     enable = true;
     flake = "/home/${user}/Projects/nixos-config";

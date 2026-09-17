@@ -15,6 +15,9 @@
       tutanota-desktop
       signal-desktop
       yubioath-flutter
+      python3
+      tealdeer
+      obsidian
     ];
   };
 
