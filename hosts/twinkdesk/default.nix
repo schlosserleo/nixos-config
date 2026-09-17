@@ -40,9 +40,9 @@ in
       nvidiaSettings = false;
 
       package = nvidiaPackage // {
-        # The CachyOS kernel compresses modules during modules_install, so
-        # nixpkgs' strip pass misses them and DWARF references to the kernel
-        # .dev output trip allowedReferences. Strip before compression instead.
+        # CachyOS compresses modules at install, so nixpkgs' strip misses them
+        # and leftover DWARF refs to kernel.dev fail allowedReferences.
+        # Strip before compressing instead.
         open = nvidiaPackage.open.overrideAttrs (old: {
           installFlags = (old.installFlags or [ ]) ++ [ "INSTALL_MOD_STRIP=1" ];
         });

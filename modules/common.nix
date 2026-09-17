@@ -52,7 +52,6 @@
     loader = {
       systemd-boot = {
         enable = true;
-        # Each generation costs a kernel and an initrd on the ESP.
         configurationLimit = lib.mkDefault 10;
       };
       efi.canTouchEfiVariables = true;

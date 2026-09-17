@@ -26,8 +26,8 @@ in
     }
   ];
 
-  # s2idle only, so a closed lid has to reach hibernate. Offset from
-  # `btrfs inspect-internal map-swapfile -r /swap/swapfile`.
+  # Only s2idle is available, so a closed lid has to end in hibernate.
+  # Offset: `btrfs inspect-internal map-swapfile -r /swap/swapfile`.
   boot.resumeDevice = "/dev/disk/by-uuid/ff46ee8a-b7ae-4222-a27f-c5f2e287af36";
   boot.kernelParams = [ "resume_offset=2630912" ];
 
@@ -35,9 +35,9 @@ in
   # Trying mainline to see whether the bug follows the kernel.
   boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
-  # 100M ESP shared with Windows: ~63M usable against ~45M per generation, so
-  # one fits. The builder copies before it prunes, so overflowing leaves a
-  # truncated initrd rather than failing. Keep the initrd small.
+  # The 100M ESP is shared with Windows and holds one ~45M generation. New
+  # files are copied before old ones are pruned, and running out of space
+  # silently truncates the initrd.
   boot.loader.systemd-boot.configurationLimit = 1;
 
   services.fprintd.enable = true;
@@ -56,7 +56,6 @@ in
     { lib, ... }:
     {
       dconf.settings = {
-        # One idle-delay covers both power sources.
         "org/gnome/desktop/session".idle-delay = lib.hm.gvariant.mkUint32 900;
 
         "org/gnome/settings-daemon/plugins/media-keys".screensaver = [ "<Super>l" ];

@@ -15,7 +15,7 @@ in
     fileSystems = [ "/" ];
   };
 
-  # Not conditioned on boot.resumeDevice: an unset one is the case worth catching.
+  # Deliberately not gated on boot.resumeDevice: a missing one is worth reporting.
   systemd.services.check-resume-offset = lib.mkIf (swapfiles != [ ]) (
     let
       swapfile = (lib.head swapfiles).device;
@@ -64,8 +64,8 @@ in
     }
   );
 
-  # snapper fails the whole timeline run if <SUBVOLUME>/.snapshots is missing
-  # and nothing creates it. A subvolume, so parent snapshots do not nest these.
+  # snapper's timeline fails without <SUBVOLUME>/.snapshots and nothing creates
+  # it. A subvolume, so snapshots of the parent don't include old snapshots.
   systemd.services.snapper-subvolumes =
     let
       dirs = lib.mapAttrsToList (

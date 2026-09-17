@@ -60,8 +60,8 @@ let
 
   uuid = "3f2d6b18-9c47-4d1e-8a05-7e6c1b93a2f4";
 
-  # projekt0n/github-nvim-theme: github_dark_colorblind, except ANSI 0/8 --
-  # the theme maps those onto the background, hiding dimmed text.
+  # github-nvim-theme's github_dark_colorblind, but with ANSI 0/8 lifted off
+  # the background so dimmed text stays readable.
   night = mkPalette {
     background = "#0d1117";
     foreground = "#c9d1d9";
@@ -85,7 +85,7 @@ let
     ];
   };
 
-  # projekt0n/github-nvim-theme: github_light_colorblind
+  # github-nvim-theme's github_light_colorblind.
   day = mkPalette {
     background = "#ffffff";
     foreground = "#1b1f24";
