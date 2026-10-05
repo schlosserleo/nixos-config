@@ -5,64 +5,12 @@
   user,
   ...
 }:
-let
-  swapfiles = lib.filter (s: s.size != null) config.swapDevices;
-in
 {
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
     fileSystems = [ "/" ];
   };
-
-  # Deliberately not gated on boot.resumeDevice: a missing one is worth reporting.
-  systemd.services.check-resume-offset = lib.mkIf (swapfiles != [ ]) (
-    let
-      swapfile = (lib.head swapfiles).device;
-      offsetParam = lib.findFirst (p: lib.hasPrefix "resume_offset=" p) null config.boot.kernelParams;
-    in
-    {
-      description = "Verify the hibernation resume offset still matches the swapfile";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "swap.target" ];
-      unitConfig.ConditionPathExists = swapfile;
-      path = [ pkgs.btrfs-progs ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      script = ''
-        if [ -z "${config.boot.resumeDevice}" ]; then
-          echo "${swapfile} is in use but boot.resumeDevice is unset" >&2
-          echo "the kernel has nowhere to resume from, so hibernation will fail" >&2
-          exit 1
-        fi
-
-        actual=$(btrfs inspect-internal map-swapfile -r ${swapfile})
-        configured=${if offsetParam == null then "" else lib.removePrefix "resume_offset=" offsetParam}
-
-        if [ -z "$configured" ]; then
-          echo "${swapfile} starts at $actual but boot.kernelParams sets no resume_offset" >&2
-          echo "hibernation cannot resume until resume_offset=$actual is added" >&2
-          exit 1
-        fi
-
-        if [ "$actual" != "$configured" ]; then
-          echo "resume_offset is stale: configured $configured, ${swapfile} now starts at $actual" >&2
-          echo "hibernation will not resume until boot.kernelParams is updated to resume_offset=$actual" >&2
-          exit 1
-        fi
-
-        booted=$(cat /sys/power/resume_offset)
-        if [ "$booted" != "$actual" ]; then
-          echo "resume_offset $actual is correct, but this kernel booted with $booted - reboot to enable hibernation"
-          exit 0
-        fi
-
-        echo "resume_offset $actual still matches ${swapfile}"
-      '';
-    }
-  );
 
   # snapper's timeline fails without <SUBVOLUME>/.snapshots and nothing creates
   # it. A subvolume, so snapshots of the parent don't include old snapshots.

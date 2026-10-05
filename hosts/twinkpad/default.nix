@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
-}:
+{ user, ... }:
 let
   # Bracketed so the EC does not cycle the pack between 79 and 80 on the dock.
   chargeStart = 75;
@@ -25,15 +19,6 @@ in
       priority = 0;
     }
   ];
-
-  # Only s2idle is available, so a closed lid has to end in hibernate.
-  # Offset: `btrfs inspect-internal map-swapfile -r /swap/swapfile`.
-  boot.resumeDevice = "/dev/disk/by-uuid/ff46ee8a-b7ae-4222-a27f-c5f2e287af36";
-  boot.kernelParams = [ "resume_offset=2630912" ];
-
-  # amdgpu crashes soon after resuming from hibernate on cachyos 7.2.4.
-  # Trying mainline to see whether the bug follows the kernel.
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
   # The 100M ESP is shared with Windows and holds one ~45M generation. New
   # files are copied before old ones are pruned, and running out of space

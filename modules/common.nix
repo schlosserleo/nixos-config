@@ -18,11 +18,12 @@
     memoryPercent = 50;
   };
 
-  services.logind.settings.Login = {
-    HandleLidSwitch = "suspend-then-hibernate";
-    HandleLidSwitchExternalPower = "suspend";
+  services.logind.settings.Login.HandleLidSwitch = "suspend";
+  systemd.sleep.settings.Sleep = {
+    AllowHibernation = "no";
+    AllowHybridSleep = "no";
+    AllowSuspendThenHibernate = "no";
   };
-  systemd.sleep.settings.Sleep.HibernateDelaySec = "30min";
 
   console.keyMap = "neoqwertz";
   time.timeZone = "Europe/Berlin";

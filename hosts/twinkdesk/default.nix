@@ -20,9 +20,6 @@ in
     }
   ];
 
-  boot.resumeDevice = "/dev/disk/by-uuid/a385b773-b84f-43f1-9136-93e2ec342628";
-  boot.kernelParams = [ "resume_offset=2214173" ];
-
   # hardware.nvidia only takes effect when the driver is selected here.
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -31,7 +28,7 @@ in
 
     nvidia = {
       modesetting.enable = true;
-      # Saves and restores VRAM across suspend and hibernate.
+      # Saves and restores VRAM across suspend.
       powerManagement.enable = true;
       # Runtime D3 needs PRIME offload, which this desktop does not use.
       powerManagement.finegrained = false;
