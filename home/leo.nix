@@ -9,6 +9,7 @@
     stateVersion = "26.05";
     packages = with pkgs; [
       claude-code
+      claude-desktop
       fastfetch
       ripgrep
       helium

@@ -16,6 +16,10 @@
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-desktop = {
+      url = "github:poeck/claude-desktop-nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -26,6 +30,7 @@
       chaotic,
       disko,
       helium-flake,
+      claude-desktop,
       ...
     }@inputs:
     let
@@ -41,7 +46,12 @@
         lib.nixosSystem {
           specialArgs = { inherit inputs user; };
           modules = [
-            { nixpkgs.overlays = [ helium-flake.overlays.default ]; }
+            {
+              nixpkgs.overlays = [
+                helium-flake.overlays.default
+                claude-desktop.overlays.default
+              ];
+            }
             disko.nixosModules.disko
             ./hosts/${hostname}
             ./modules/common.nix
