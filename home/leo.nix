@@ -19,6 +19,10 @@
       python3
       tealdeer
       obsidian
+      misterdownloadmanager
+      yt-dlp
+      ffmpeg
+      libreoffice
     ];
   };
 

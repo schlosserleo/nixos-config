@@ -50,6 +50,9 @@
               nixpkgs.overlays = [
                 helium-flake.overlays.default
                 claude-desktop.overlays.default
+                (final: _: {
+                  misterdownloadmanager = final.callPackage ./pkgs/misterdownloadmanager/package.nix { };
+                })
               ];
             }
             disko.nixosModules.disko
