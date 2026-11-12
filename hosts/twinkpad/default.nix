@@ -27,6 +27,10 @@ in
 
   services.fprintd.enable = true;
 
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+  users.users.${user}.extraGroups = [ "libvirtd" ];
+
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="power_supply", KERNEL=="BAT0", ATTR{charge_control_start_threshold}="${toString chargeStart}", ATTR{charge_control_end_threshold}="${toString chargeEnd}"
   '';
@@ -41,6 +45,11 @@ in
     { lib, ... }:
     {
       dconf.settings = {
+        "org/virt-manager/virt-manager/connections" = {
+          autoconnect = [ "qemu:///system" ];
+          uris = [ "qemu:///system" ];
+        };
+
         "org/gnome/desktop/session".idle-delay = lib.hm.gvariant.mkUint32 900;
 
         "org/gnome/settings-daemon/plugins/media-keys".screensaver = [ "<Super>l" ];
